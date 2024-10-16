@@ -26,20 +26,22 @@ if ruta_imagen:
         cv2.namedWindow('Imagen original', cv2.WINDOW_NORMAL)
         cv2.resizeWindow('Imagen original', 600, 400)  # Cambia las dimensiones a tu gusto
         
-        cv2.namedWindow('Filtro 1 (GaussianBlur)', cv2.WINDOW_NORMAL)
-        cv2.resizeWindow('Filtro 1 (GaussianBlur)', 600, 400)
+       # cv2.namedWindow('Filtro 1 (GaussianBlur)', cv2.WINDOW_NORMAL)
+       # cv2.resizeWindow('Filtro 1 (GaussianBlur)', 600, 400)
         
-        cv2.namedWindow('Filtro 2 (MedianBlur)', cv2.WINDOW_NORMAL)
-        cv2.resizeWindow('Filtro 2 (MedianBlur)', 600, 400)
+       # cv2.namedWindow('Filtro 2 (MedianBlur)', cv2.WINDOW_NORMAL)
+       # cv2.resizeWindow('Filtro 2 (MedianBlur)', 600, 400)
 
         cv2.namedWindow('Filtro 3(Bilateral)', cv2.WINDOW_NORMAL)
         cv2.resizeWindow('Filtro 3(Bilateral)', 600, 400)
 
         # Mostrar las imágenes en las ventanas con el tamaño especificado
         cv2.imshow('Imagen original', imagen)
-        cv2.imshow('Filtro 1 (GaussianBlur)', imagen_G)
-        cv2.imshow('Filtro 2 (MedianBlur)', imagen_MB)
+       # cv2.imshow('Filtro 1 (GaussianBlur)', imagen_G)
+        #cv2.imshow('Filtro 2 (MedianBlur)', imagen_MB)
         cv2.imshow('Filtro 3(Bilateral)',imagen_B)
+        cv2.imwrite('C:/Users/jesus/Documents/TT2/Imagenes/ImagenFiltrada.jpg', imagen_B)
+
 
         # Esperar a que se cierre la ventana
         cv2.waitKey(0)
