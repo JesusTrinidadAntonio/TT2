@@ -17,23 +17,15 @@ if ruta_imagen:
 
     if imagen is not None:
         # Aplicar el filtro de desenfoque gaussiano
-        imagen_G = cv2.GaussianBlur(imagen, (5, 5), 0)
-        imagen_MB= cv2.medianBlur(imagen_G, 5)
-        imagen_B = cv2.bilateralFilter(imagen_MB ,d=9, sigmaColor=75, sigmaSpace=75)
-        imagen_G2 = cv2.GaussianBlur(imagen_MB, (5, 5), 0)
-        imagen_MB2= cv2.medianBlur(imagen_G2, 5)
-        imagen_B2 = cv2.bilateralFilter(imagen_MB2 ,d=9, sigmaColor=75, sigmaSpace=75)
+        for i in range(5):
+            imagen_G = cv2.GaussianBlur(imagen, (5, 5), 0)
+            imagen_MB = cv2.medianBlur(imagen_G, 5)
+            imagen_B = cv2.bilateralFilter(imagen_MB, d=9, sigmaColor=75, sigmaSpace=75)
         
 
         # Crear ventanas con un tamaño personalizado
         cv2.namedWindow('Imagen original', cv2.WINDOW_NORMAL)
         cv2.resizeWindow('Imagen original', 600, 400)  # Cambia las dimensiones a tu gusto
-        
-       # cv2.namedWindow('Filtro 1 (GaussianBlur)', cv2.WINDOW_NORMAL)
-       # cv2.resizeWindow('Filtro 1 (GaussianBlur)', 600, 400)
-        
-       # cv2.namedWindow('Filtro 2 (MedianBlur)', cv2.WINDOW_NORMAL)
-       # cv2.resizeWindow('Filtro 2 (MedianBlur)', 600, 400)
 
         cv2.namedWindow('Filtro 3(Bilateral)', cv2.WINDOW_NORMAL)
         cv2.resizeWindow('Filtro 3(Bilateral)', 600, 400)
@@ -42,7 +34,7 @@ if ruta_imagen:
         cv2.imshow('Imagen original', imagen)
        # cv2.imshow('Filtro 1 (GaussianBlur)', imagen_G)
         #cv2.imshow('Filtro 2 (MedianBlur)', imagen_MB)
-        cv2.imshow('Filtro 3(Bilateral)',imagen_B2)
+        cv2.imshow('Filtro 3(Bilateral)',imagen_B)
         cv2.imwrite('C:/Users/jesus/Documents/TT2/Imagenes/ImagenFiltrada.jpg', imagen_B)
 
 
