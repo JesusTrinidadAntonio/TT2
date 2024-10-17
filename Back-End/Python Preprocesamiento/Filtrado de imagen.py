@@ -21,8 +21,7 @@ if ruta_imagen:
             imagen_G = cv2.GaussianBlur(imagen, (5, 5), 0)
             imagen_MB = cv2.medianBlur(imagen_G, 5)
             imagen_B = cv2.bilateralFilter(imagen_MB, d=9, sigmaColor=75, sigmaSpace=75)
-        
-
+    
         # Crear ventanas con un tamaño personalizado
         cv2.namedWindow('Imagen original', cv2.WINDOW_NORMAL)
         cv2.resizeWindow('Imagen original', 600, 400)  # Cambia las dimensiones a tu gusto
