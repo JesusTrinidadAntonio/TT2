@@ -20,6 +20,9 @@ if ruta_imagen:
         imagen_G = cv2.GaussianBlur(imagen, (5, 5), 0)
         imagen_MB= cv2.medianBlur(imagen_G, 5)
         imagen_B = cv2.bilateralFilter(imagen_MB ,d=9, sigmaColor=75, sigmaSpace=75)
+        imagen_G2 = cv2.GaussianBlur(imagen_MB, (5, 5), 0)
+        imagen_MB2= cv2.medianBlur(imagen_G2, 5)
+        imagen_B2 = cv2.bilateralFilter(imagen_MB2 ,d=9, sigmaColor=75, sigmaSpace=75)
         
 
         # Crear ventanas con un tamaño personalizado
@@ -39,7 +42,7 @@ if ruta_imagen:
         cv2.imshow('Imagen original', imagen)
        # cv2.imshow('Filtro 1 (GaussianBlur)', imagen_G)
         #cv2.imshow('Filtro 2 (MedianBlur)', imagen_MB)
-        cv2.imshow('Filtro 3(Bilateral)',imagen_B)
+        cv2.imshow('Filtro 3(Bilateral)',imagen_B2)
         cv2.imwrite('C:/Users/jesus/Documents/TT2/Imagenes/ImagenFiltrada.jpg', imagen_B)
 
 
