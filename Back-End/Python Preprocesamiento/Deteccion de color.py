@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # Cargar la imagen
-img = cv2.imread("C:/Users/jesus/Documents/TT2/Imagenes/imagen_saturada.jpg")
+img = cv2.imread("C:/Users/jesus/Documents/TT2/Imagenes/imagenSaturada.jpg")
 
 # Convertir la imagen a HSV
 img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
