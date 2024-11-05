@@ -28,11 +28,8 @@ def guardar_respuestas():
 
     ventana.destroy()
 
-    # Ejecuta el script Python especificando el intérprete y pasando los argumentos
-    subprocess.run([
-        "python", "C:/Users/jesus/Documents/TT2/Back-End/Python Preprocesamiento/Elegir_color.py",
-        respuestas_colores, respuestas_tamano, ruta_imagen
-    ])
+    subprocess.run([ "python", "C:/Users/jesus/Documents/TT2/Back-End/Python Preprocesamiento/Filtrado y Saturacion.py",
+        respuestas_colores, respuestas_tamano, ruta_imagen])
 
 # Configuración de la ventana principal
 ventana = Tk()

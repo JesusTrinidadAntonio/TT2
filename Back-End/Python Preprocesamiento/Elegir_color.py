@@ -22,8 +22,10 @@ hsv_max = None
 
 # Función para mostrar mensajes en la ventana de imagen
 def mostrar_mensaje(imagen, mensaje, duracion=1000):
-    imagen_mensaje = imagen.copy()
+    imagen_mensaje = cv2.resize(imagen, (800, 800))  # Redimensionar la imagen a 600x600
     cv2.putText(imagen_mensaje, mensaje, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+    cv2.namedWindow("Selecciona los colores", cv2.WINDOW_NORMAL)
+    cv2.resizeWindow("Selecciona los colores", 800, 800)
     cv2.imshow("Selecciona los colores", imagen_mensaje)
     cv2.waitKey(duracion)
 
@@ -58,14 +60,20 @@ def guardar_rangos():
             f.write(f"Min: {min_hsv}, Max: {max_hsv}\n")
     
     print("Rangos guardados en rangos_colores.txt")
-    subprocess.run(["python", "C:/Users/jesus/Documents/TT2/Back-End/Python Preprocesamiento/Filtrado y Saturacion.py", ruta_imagen])
-    
-# Cargar la imagen desde la ruta proporcionada y configurar la ventana
+    subprocess.run([
+        "python", "C:/Users/jesus/Documents/TT2/Back-End/Python Preprocesamiento/Objeto de referencia.py",
+        str(respuestas_colores), str(respuestas_tamano), str(ruta_imagen)
+    ])
+
+# Cargar la imagen desde la ruta proporcionada y redimensionarla
 imagen = cv2.imread(ruta_imagen)
 if imagen is None:
     print(f"No se pudo cargar la imagen en la ruta: {ruta_imagen}")
     sys.exit(1)
 
+imagen = cv2.resize(imagen, (800, 800))  # Redimensionar la imagen principal a 600x600
+
+# Mostrar la imagen redimensionada y configurar el callback de mouse
 cv2.imshow("Selecciona los colores", imagen)
 cv2.setMouseCallback("Selecciona los colores", seleccionar_color)
 
