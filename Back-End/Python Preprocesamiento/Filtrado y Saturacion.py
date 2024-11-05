@@ -4,10 +4,12 @@ import sys
 import subprocess
 
 # Verificar que se reciben los argumentos
-if len(sys.argv) > 1:
-    ruta_imagen = sys.argv[1]
+if len(sys.argv) > 3:
+    respuestas_colores = int(sys.argv[1])  # Cantidad de rangos de colores a seleccionar
+    respuestas_tamano = sys.argv[2]        # Tamaño del objeto de referencia (no utilizado en este código)
+    ruta_imagen = sys.argv[3]              # Ruta de la imagen a procesar
 else:
-    print("No se proporcionaron argumentos.")
+    print("No se proporcionaron argumentos suficientes.")
     sys.exit(1)
 
 imagen=cv2.imread(ruta_imagen)
@@ -33,5 +35,9 @@ imagen_saturada = cv2.cvtColor(imagen_hsv, cv2.COLOR_HSV2BGR)
 ruta_imagen_saturada = 'C:/Users/jesus/Documents/TT2/Imagenes/ImagenSaturada.jpg'
 cv2.imwrite(ruta_imagen_saturada, imagen_saturada)
 
-# Llamar a Detencion de color.py con la imagen saturada y los rangos HSV
-subprocess.run(["python", "C:/Users/jesus/Documents/TT2/Back-End/Python Preprocesamiento/Deteccion de color.py", ruta_imagen])
+
+subprocess.run([
+    "python", "C:/Users/jesus/Documents/TT2/Back-End/Python Preprocesamiento/Elegir_color.py",
+    str(respuestas_colores), str(respuestas_tamano), str(ruta_imagen_saturada)
+])
+
