@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # Cargar la imagen desde la ubicación especificada
-file_path = "TT2/Lagos1.jpg"
+file_path = "pincel/Lagos1.jpg"
 img = cv2.imread(file_path)
 if img is None:
     print("Error: No se pudo cargar la imagen. Asegúrate de que el archivo exista en la ruta especificada.")
@@ -145,7 +145,7 @@ while True:
         # Crear la imagen binarizada a partir de la máscara
         binary_img = np.zeros_like(img)
         binary_img[mask != 0] = (255, 255, 255)
-        cv2.imwrite("TT2/image_masked.png", binary_img)
+        cv2.imwrite("pincel/image_masked.png", binary_img)
         print("Imagen binarizada guardada como 'image_masked.png'.")
     elif key == 27:  # Esc para salir
         break
