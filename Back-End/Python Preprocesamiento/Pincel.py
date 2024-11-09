@@ -1,9 +1,27 @@
 import cv2
 import numpy as np
+import sys
+import subprocess
+import os
+
+# Verificar y capturar argumentos
+if len(sys.argv) > 3:
+    ruta_mask_varios = sys.argv[1]
+    ruta_mask_uno = sys.argv[2]
+    respuesta_tamano= sys.argv[3]
+else:
+    print("No se proporcionaron argumentos suficientes.")
+    sys.exit(1)
+
+# Cargar las máscaras
+mask_varios = np.load(ruta_mask_varios)
+mask_uno = np.load(ruta_mask_uno)
 
 # Cargar la imagen desde la ubicación especificada
-file_path = "C:/Users/jesus/Documents/TT2/Pincel/lagos1.jpg"
-img = cv2.imread(file_path)
+ruta_base = os.path.dirname(os.path.abspath(__file__))
+ruta_imagen = os.path.join(ruta_base, 'Imagenes', 'resultado_varios_rangos.jpg')
+
+img = cv2.imread(ruta_imagen)
 if img is None:
     print("Error: No se pudo cargar la imagen. Asegúrate de que el archivo exista en la ruta especificada.")
     exit()
