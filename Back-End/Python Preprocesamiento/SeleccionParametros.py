@@ -1,4 +1,5 @@
 import subprocess
+import os
 from tkinter import Tk, Label, Entry, Button, messagebox, filedialog
 
 # Variables globales para almacenar las respuestas
@@ -28,7 +29,8 @@ def guardar_respuestas():
 
     ventana.destroy()
 
-    subprocess.run([ "python", "C:/Users/jesus/Documents/TT2/Back-End/Python Preprocesamiento/Filtrado y Saturacion.py",
+    os.chdir(os.path.dirname(__file__))
+    subprocess.run([ "python", "Filtrado y Saturacion.py",
         respuestas_colores, respuestas_tamano, ruta_imagen])
 
 # Configuración de la ventana principal

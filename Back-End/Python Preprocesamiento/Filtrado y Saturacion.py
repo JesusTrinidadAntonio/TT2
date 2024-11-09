@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import sys
 import subprocess
+import os
 
 # Verificar que se reciben los argumentos
 if len(sys.argv) > 3:
@@ -32,12 +33,16 @@ imagen_hsv[:, :, 1] = np.clip(imagen_hsv[:, :, 1] * factor_saturacion, 0, 255)
 imagen_saturada = cv2.cvtColor(imagen_hsv, cv2.COLOR_HSV2BGR)
 
 # Guardar la imagen saturada
-ruta_imagen_saturada = 'C:/Users/jesus/Documents/TT2/Imagenes/ImagenSaturada.jpg'
+# Obtener la ruta absoluta del directorio actual y combinarla con "Imagenes/ImagenSaturada.jpg"
+ruta_base = os.path.dirname(os.path.abspath(__file__))
+ruta_imagen_saturada = os.path.join(ruta_base, 'Imagenes', 'ImagenSaturada.jpg')
+
 cv2.imwrite(ruta_imagen_saturada, imagen_saturada)
 
 
+os.chdir(os.path.dirname(__file__))
 subprocess.run([
-    "python", "C:/Users/jesus/Documents/TT2/Back-End/Python Preprocesamiento/Elegir_color.py",
+    "python", "Color.py",
     str(respuestas_colores), str(respuestas_tamano), str(ruta_imagen_saturada)
 ])
 
