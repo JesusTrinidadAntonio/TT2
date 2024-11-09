@@ -1,8 +1,15 @@
 import cv2
 import numpy as np
+import os
 
-# Ruta de la imagen binarizada
-image_path = "C:/Users/jesus/Documents/TT2/Pincel/image_masked.png"
+# Cargar la imagen desde la ubicación especificada
+ruta_base = os.path.dirname(os.path.abspath(__file__))
+ruta_imagen = os.path.join(ruta_base, 'Imagenes', 'binarizada.jpg')
+
+img = cv2.imread(ruta_imagen)
+if img is None:
+    print("Error: No se pudo cargar la imagen. Asegúrate de que el archivo exista en la ruta especificada.")
+    exit()
 
 # Leer la imagen en escala de grises
 image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
