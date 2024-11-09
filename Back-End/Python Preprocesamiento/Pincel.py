@@ -163,7 +163,8 @@ while True:
         # Crear la imagen binarizada a partir de la máscara
         binary_img = np.zeros_like(img)
         binary_img[mask != 0] = (255, 255, 255)
-        cv2.imwrite("C:/Users/jesus/Documents/TT2/Pincel/image_masked.png", binary_img)
+        ruta = os.path.join(ruta_base, 'Imagenes', 'binarizada.jpg')
+        cv2.imwrite(ruta, binary_img)
         print("Imagen binarizada guardada como 'image_masked.png'.")
     elif key == 27:  # Esc para salir
         break
