@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # Ruta de la imagen binarizada
-image_path = "Pincel/image_masked.png"
+image_path = "C:/Users/jesus/Documents/TT2/Pincel/image_masked.png"
 
 # Leer la imagen en escala de grises
 image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
