@@ -12,11 +12,11 @@ if img is None:
     exit()
 
 # Leer la imagen en escala de grises
-image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+image = cv2.imread(ruta_imagen, cv2.IMREAD_GRAYSCALE)
 
 # Verificar si la imagen se cargó correctamente
 if image is None:
-    print("Error: no se pudo cargar la imagen en", image_path)
+    print("Error: no se pudo cargar la imagen en", ruta_imagen)
     exit()
 
 # Pedir al usuario el tamaño en metros cuadrados de un píxel
