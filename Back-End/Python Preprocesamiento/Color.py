@@ -33,27 +33,24 @@ def mostrar_mensaje(imagen, mensaje, duracion=1000):
     cv2.imshow("Selecciona los colores", imagen_mensaje)
     cv2.waitKey(duracion)
 
-# Función para manejar clics del mouse en la primera fase de selección
 def seleccionar_multiples_colores(event, x, y, flags, param):
-    global hsv_min, hsv_max, contador, rango_colores_hsv
+    global contador, rango_colores_hsv
     if event == cv2.EVENT_LBUTTONDOWN:
+        # Obtener el color en formato BGR de la posición seleccionada
         color_bgr = imagen[y, x]
+        # Convertir el color a formato HSV
         color_hsv = cv2.cvtColor(np.uint8([[color_bgr]]), cv2.COLOR_BGR2HSV)[0][0]
-
-        if hsv_min is None:
-            hsv_min = color_hsv
-            print(f"Color mínimo seleccionado: {hsv_min}")
-        elif hsv_max is None:
-            hsv_max = color_hsv
-            rango_colores_hsv.append((hsv_min.tolist(), hsv_max.tolist()))
-            print(f"Rango {contador + 1} guardado: Min = {hsv_min}, Max = {hsv_max}")
-            contador += 1
-            mostrar_mensaje(imagen, f"Rango {contador} guardado")
-            hsv_min, hsv_max = None, None  # Reiniciar para el siguiente rango
-
+        
+        # Guardar el color HSV seleccionado
+        rango_colores_hsv.append(color_hsv.tolist())
+        contador += 1
+        print(f"Color {contador} guardado: {color_hsv}")
+        mostrar_mensaje(imagen, f"Color {contador} guardado")
+        
+        # Si se alcanzó el número requerido de colores, pasa a la siguiente función
         if contador >= respuestas_colores:
             cv2.setMouseCallback("Selecciona los colores", seleccionar_color_con_variacion)
-            mostrar_mensaje(imagen, "Selecciona el siguiente rango de color", 2000)
+            mostrar_mensaje(imagen, "Colores seleccionados. Procediendo a guardar...", 2000)
 
 # Función para seleccionar un rango con variación alrededor del color en HSV
 def seleccionar_color_con_variacion(event, x, y, flags, param):
@@ -83,14 +80,13 @@ def seleccionar_color_con_variacion(event, x, y, flags, param):
 # Función para guardar los rangos múltiples en un archivo de texto
 def guardar_rangos():
     ruta_base = os.path.dirname(os.path.abspath(__file__))
-    ruta_archivo = os.path.join(ruta_base, "colores", "rangos_colores.txt")
-
+    ruta_archivo = os.path.join(ruta_base, "colores", "colores_seleccionados.txt")
+    
+    # Guardar los colores seleccionados en formato de texto
     with open(ruta_archivo, "w") as f:
-        for rango in rango_colores_hsv:
-            min_hsv = rango[0]
-            max_hsv = rango[1]
-            f.write(f"Min: {min_hsv}, Max: {max_hsv}\n")
-    print("Rangos guardados en rangos_colores.txt")
+        for color in rango_colores_hsv:
+            f.write(f"HSV: {color}\n")
+    print("Colores guardados en colores_seleccionados.txt")
 
 # Función para guardar el rango con variación en un archivo de texto separado
 def guardar_rango_variado():
