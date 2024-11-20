@@ -1,22 +1,15 @@
 import cv2
 import numpy as np
-import os
 
-# Cargar la imagen desde la ubicación especificada
-ruta_base = os.path.dirname(os.path.abspath(__file__))
-ruta_imagen = os.path.join(ruta_base, 'Imagenes', 'binarizada.jpg')
-
-img = cv2.imread(ruta_imagen)
-if img is None:
-    print("Error: No se pudo cargar la imagen. Asegúrate de que el archivo exista en la ruta especificada.")
-    exit()
+# Ruta de la imagen binarizada
+image_path = "Pincel/Imagenes/Lagos1_bin.png"
 
 # Leer la imagen en escala de grises
-image = cv2.imread(ruta_imagen, cv2.IMREAD_GRAYSCALE)
+image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
 # Verificar si la imagen se cargó correctamente
 if image is None:
-    print("Error: no se pudo cargar la imagen en", ruta_imagen)
+    print("Error: no se pudo cargar la imagen en", image_path)
     exit()
 
 # Pedir al usuario el tamaño en metros cuadrados de un píxel

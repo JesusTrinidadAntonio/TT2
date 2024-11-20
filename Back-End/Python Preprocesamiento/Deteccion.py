@@ -26,7 +26,7 @@ def procesar_varios_rangos():
     colores_hsv = []
     try:
         ruta_base = os.path.dirname(os.path.abspath(__file__))
-        ruta_archivo = os.path.join(ruta_base, "colores", "rangos_colores.txt")
+        ruta_archivo = os.path.join(ruta_base, "colores", "colores_seleccionados.txt")
         with open(ruta_archivo, "r") as f:
             for line in f:
                 line = line.strip()
