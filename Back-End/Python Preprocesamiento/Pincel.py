@@ -1,21 +1,20 @@
 import cv2
 import numpy as np
 import sys
-import subprocess
 import os
+import subprocess
 
 # Verificar y capturar argumentos
 if len(sys.argv) > 3:
     ruta_mask_varios = sys.argv[1]
     ruta_mask_uno = sys.argv[2]
-    respuesta_tamano= sys.argv[3]
+    respuesta_tamano = sys.argv[3]
 else:
     print("No se proporcionaron argumentos suficientes.")
     sys.exit(1)
 
 # Cargar las máscaras
 mask_varios = np.load(ruta_mask_varios)
-mask_uno = np.load(ruta_mask_uno)
 
 # Cargar la imagen desde la ubicación especificada
 ruta_base = os.path.dirname(os.path.abspath(__file__))
@@ -37,33 +36,20 @@ mask = np.zeros(img.shape[:2], dtype=np.uint8)  # Máscara para binarización
 brush_size = 10  # Tamaño de la brocha
 painting = False
 erasing = False
-selecting_color = False
-current_color = (0, 0, 255, 127)  # Color inicial (Rojo transparente)
+current_color = (0, 0, 255, 127)  # Color rojo transparente
 
-# Paleta de colores y botones
-colors = {
-    'Rojo': (0, 0, 255),
-    'Verde': (0, 255, 0),
-    'Azul': (255, 0, 0),
-    'Amarillo': (0, 255, 255),
-    'Cafe': (42, 42, 165),
-    'Negro': (0, 0, 0),
-    'Blanco': (255, 255, 255),
-    'Naranja': (0, 128, 255),
-}
-
+# Coordenadas de los botones
 button_reset = (10, 20, 140, 60)  # Coordenadas del botón de reinicio
-button_select_color = (10, 80, 140, 120)
-button_close = (10, 140, 140, 180)
+button_save = (10, 80, 140, 120)  # Coordenadas del botón de guardar
+button_close = (10, 140, 140, 180)  # Coordenadas del botón de cerrar
 button_erase = (10, 200, 140, 240)  # Botón de borrado
-color_buttons = {color: (10, 260 + i * 30, 40, 290 + i * 30) for i, color in enumerate(colors)}  # Coordenadas de la paleta
 
 # Variable global para almacenar la última posición del mouse
 last_point = None
 
 # Actualización de la función 'paint' con interpolación de líneas
 def paint(event, x, y, flags, param):
-    global painting, erasing, selecting_color, overlay, output, mask, current_color, last_point
+    global painting, erasing, overlay, output, mask, last_point
 
     if x < img.shape[1]:  # Solo activar si se hace clic en la imagen
         if event == cv2.EVENT_LBUTTONDOWN:
@@ -97,10 +83,20 @@ def paint(event, x, y, flags, param):
             mask.fill(0)
             print("Malla roja reiniciada.")
 
-        elif button_select_color[0] <= x - img.shape[1] <= button_select_color[2] and button_select_color[1] <= y <= button_select_color[3]:
-            # Activar el modo de selección de color
-            selecting_color = True
-            print("Selecciona un color de la paleta para pintar.")
+        elif button_save[0] <= x - img.shape[1] <= button_save[2] and button_save[1] <= y <= button_save[3]:
+            # Combinar la máscara actual con la máscara cargada
+            combined_mask = cv2.bitwise_or(mask, mask_varios)
+
+            # Guardar la máscara combinada como una imagen binarizada
+            binary_img = np.zeros_like(img)
+            binary_img[combined_mask != 0] = (255, 255, 255)
+            ruta = os.path.join(ruta_base, 'Imagenes', 'binarizada.jpg')
+            cv2.imwrite(ruta, binary_img)
+            print("Imagen combinada guardada como 'binarizada.jpg'.")
+
+            os.chdir(os.path.dirname(__file__))
+            subprocess.run(["python", "pixel.py", str(respuesta_tamano), str(ruta_mask_uno)])
+
 
         elif button_close[0] <= x - img.shape[1] <= button_close[2] and button_close[1] <= y <= button_close[3]:
             # Cerrar la aplicación
@@ -113,37 +109,24 @@ def paint(event, x, y, flags, param):
             erasing = not erasing
             print("Modo borrar activado." if erasing else "Modo borrar desactivado.")
 
-        # Comprobar si se ha seleccionado algún color
-        for color_name, (cx1, cy1, cx2, cy2) in color_buttons.items():
-            if cx1 <= x - img.shape[1] <= cx2 and cy1 <= y <= cy2:
-                current_color = (*colors[color_name], 127)  # Cambiar el color actual con transparencia
-                print(f"Color de pintura seleccionado: {color_name}")
-                erasing = False  # Desactivar el modo borrador si se selecciona un color
-
-# Dibujar los botones y la paleta en el área de botones
+# Dibujar los botones
 def draw_buttons(panel):
     # Botón de reinicio
     cv2.rectangle(panel, (button_reset[0], button_reset[1]), (button_reset[2], button_reset[3]), (180, 180, 180), -1)
     cv2.putText(panel, "Reiniciar", (button_reset[0] + 10, button_reset[1] + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
 
-    # Botón de seleccionar color
-    cv2.rectangle(panel, (button_select_color[0], button_select_color[1]), (button_select_color[2], button_select_color[3]), (180, 180, 180), -1)
-    cv2.putText(panel, "Sel. Color", (button_select_color[0] + 10, button_select_color[1] + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
+    # Botón de guardar
+    cv2.rectangle(panel, (button_save[0], button_save[1]), (button_save[2], button_save[3]), (180, 180, 180), -1)
+    cv2.putText(panel, "Guardar", (button_save[0] + 20, button_save[1] + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
 
     # Botón de cerrar
     cv2.rectangle(panel, (button_close[0], button_close[1]), (button_close[2], button_close[3]), (180, 180, 180), -1)
-    cv2.putText(panel, "Cerrar", (button_close[0] + 10, button_close[1] + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
+    cv2.putText(panel, "Cerrar", (button_close[0] + 20, button_close[1] + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
 
-    # Botón de borrar (cambia de color si está activado)
+    # Botón de borrar
     erase_button_color = (255, 255, 255) if erasing else (180, 180, 180)
     cv2.rectangle(panel, (button_erase[0], button_erase[1]), (button_erase[2], button_erase[3]), erase_button_color, -1)
     cv2.putText(panel, "Borrar", (button_erase[0] + 30, button_erase[1] + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
-
-    # Paleta de colores
-    for i, (color_name, color_rgb) in enumerate(colors.items()):
-        color_coords = color_buttons[color_name]
-        cv2.rectangle(panel, (color_coords[0], color_coords[1]), (color_coords[2], color_coords[3]), color_rgb, -1)
-        #cv2.putText(panel, color_name, (color_coords[0] + 10, color_coords[1] + 25), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 255, 255) if np.mean(color_rgb) < 128 else (0, 0, 0), 1)
 
 # Configurar el callback del mouse en la imagen
 cv2.namedWindow("Paint Tool")
@@ -157,16 +140,9 @@ while True:
     # Mostrar la imagen combinada
     cv2.imshow("Paint Tool", combined_output)
     
-    # Presionar "s" para guardar la imagen binarizada
+    # Esc para salir
     key = cv2.waitKey(1) & 0xFF
-    if key == ord('s'):
-        # Crear la imagen binarizada a partir de la máscara
-        binary_img = np.zeros_like(img)
-        binary_img[mask != 0] = (255, 255, 255)
-        ruta = os.path.join(ruta_base, 'Imagenes', 'binarizada.jpg')
-        cv2.imwrite(ruta, binary_img)
-        print("Imagen binarizada guardada como 'image_masked.png'.")
-    elif key == 27:  # Esc para salir
+    if key == 27:
         break
 
 cv2.destroyAllWindows()

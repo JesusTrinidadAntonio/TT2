@@ -28,33 +28,48 @@ def procesar_varios_rangos():
         ruta_base = os.path.dirname(os.path.abspath(__file__))
         ruta_archivo = os.path.join(ruta_base, "colores", "colores_seleccionados.txt")
         with open(ruta_archivo, "r") as f:
+            hsv_values = []
             for line in f:
                 line = line.strip()
                 if not line:
+                    continue  # Saltar líneas vacías
+                
+                # Validar que la línea contiene "HSV: "
+                if "HSV: " not in line:
+                    print(f"Línea con formato inesperado: {line}")
                     continue
                 
-                # Extraer los valores mínimos y máximos del archivo
-                min_part = line.split("], Max: ")[0]
-                max_part = line.split("], Max: ")[1]
-
-                # Convertir el texto a arrays de NumPy y aplicar una tolerancia
-                hsv_min = np.array([int(x) for x in min_part.split(": ")[1].strip()[1:-1].split(", ")])
-                hsv_max = np.array([int(x) for x in max_part.strip()[1:-1].split(", ")])
-
+                # Extraer el array HSV
+                try:
+                    hsv_value = np.array([int(x) for x in line.split("HSV: ")[1].strip()[1:-1].split(", ")])
+                    hsv_values.append(hsv_value)
+                except Exception as e:
+                    print(f"Error al procesar la línea: {line}")
+                    print(f"Detalle del error: {e}")
+                    continue
+                
+            # Generar rangos mínimos y máximos
+            if hsv_values:
+                hsv_values = np.array(hsv_values)
+                hsv_min = np.min(hsv_values, axis=0)
+                hsv_max = np.max(hsv_values, axis=0)
+                
                 # Aplicar tolerancia
                 tolerancia = np.array([10, 40, 50])  # Ajustar tolerancia para cada componente
                 hsv_min = np.clip(hsv_min - tolerancia, 0, 255)
                 hsv_max = np.clip(hsv_max + tolerancia, 0, 255)
-
-                # Añadir al listado de colores con tolerancia
+                
+                # Guardar los rangos calculados
                 colores_hsv.append((hsv_min, hsv_max))
-
+            else:
+                print("No se encontraron valores HSV válidos en el archivo.")
     except FileNotFoundError:
-        print("El archivo rangos_colores.txt no se encontró.")
+        print("El archivo colores_seleccionados.txt no se encontró.")
         sys.exit(1)
     except Exception as e:
         print(f"Error inesperado al procesar el archivo de colores: {e}")
         sys.exit(1)
+
 
     # Crear la máscara total combinando todos los rangos con tolerancia
     mask_total = None
