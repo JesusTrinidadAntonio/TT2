@@ -70,12 +70,23 @@ def procesar_varios_rangos():
         print(f"Error inesperado al procesar el archivo de colores: {e}")
         sys.exit(1)
 
-
     # Crear la máscara total combinando todos los rangos con tolerancia
     mask_total = None
     for hsv_min, hsv_max in colores_hsv:
         mask = cv2.inRange(img_hsv, hsv_min, hsv_max)
         mask_total = mask if mask_total is None else cv2.bitwise_or(mask_total, mask)
+
+    # Encontrar contornos en la máscara
+    contours, _ = cv2.findContours(mask_total, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Filtrar el contorno más grande
+    if contours:
+        largest_contour = max(contours, key=cv2.contourArea)
+        mask_largest = np.zeros_like(mask_total)
+        cv2.drawContours(mask_largest, [largest_contour], -1, 255, thickness=cv2.FILLED)
+        mask_total = mask_largest
+    else:
+        print("No se encontraron regiones en la máscara.")
 
     # Guardar la máscara como archivo .npy para que Pincel.py la pueda leer
     ruta_mask_varios = os.path.join(ruta_base, 'colores', 'mascara_varios_rangos.npy')
@@ -85,9 +96,10 @@ def procesar_varios_rangos():
     resultado = cv2.bitwise_and(img, img, mask=mask_total)
     ruta_imagen_lago = os.path.join(ruta_base, 'Imagenes', 'resultado_varios_rangos.jpg')
     cv2.imwrite(ruta_imagen_lago, resultado)
-    print("Imagen procesada con varios rangos guardada como resultado_varios_rangos.png")
+    print("Imagen procesada con varios rangos guardada como resultado_varios_rangos.jpg")
 
     return ruta_mask_varios  # Retornar la ruta de la máscara guardada
+
 
 
 def procesar_un_rango():
