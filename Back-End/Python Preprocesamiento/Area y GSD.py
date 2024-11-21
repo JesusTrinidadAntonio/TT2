@@ -17,6 +17,8 @@ else:
 
 os.chdir(os.path.dirname(__file__))
 binary_image = cv2.imread('Imagenes/binarizada.jpg', cv2.IMREAD_GRAYSCALE)
+#ruta_mascara  = os.path.join(ruta_base, "colores", "mascara_varios_rangos.npy")
+#binary_image = np.load(ruta_mascara)
 
 # Detectar los contornos en la imagen
 contours, _ = cv2.findContours(binary_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
