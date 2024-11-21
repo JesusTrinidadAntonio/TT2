@@ -60,7 +60,7 @@ def seleccionar_color_con_variacion(event, x, y, flags, param):
         color_hsv = cv2.cvtColor(np.uint8([[color_bgr]]), cv2.COLOR_BGR2HSV)[0][0]
 
         # Crear un rango mínimo y máximo alrededor del color seleccionado en HSV
-        rango_variacion_h = 10  # Rango de variación para el canal H (Hue)
+        rango_variacion_h = 20  # Rango de variación para el canal H (Hue)
         rango_variacion_s = 40  # Rango de variación para el canal S (Saturation)
         rango_variacion_v = 40  # Rango de variación para el canal V (Value)
 
