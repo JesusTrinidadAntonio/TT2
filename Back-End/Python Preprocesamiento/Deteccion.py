@@ -26,31 +26,45 @@ def procesar_varios_rangos():
     colores_hsv = []
     try:
         ruta_base = os.path.dirname(os.path.abspath(__file__))
-        ruta_archivo = os.path.join(ruta_base, "colores", "rangos_colores.txt")
+        ruta_archivo = os.path.join(ruta_base, "colores", "colores_seleccionados.txt")
         with open(ruta_archivo, "r") as f:
+            hsv_values = []
             for line in f:
                 line = line.strip()
                 if not line:
+                    continue  # Saltar líneas vacías
+                
+                # Validar que la línea contiene "HSV: "
+                if "HSV: " not in line:
+                    print(f"Línea con formato inesperado: {line}")
                     continue
                 
-                # Extraer los valores mínimos y máximos del archivo
-                min_part = line.split("], Max: ")[0]
-                max_part = line.split("], Max: ")[1]
-
-                # Convertir el texto a arrays de NumPy y aplicar una tolerancia
-                hsv_min = np.array([int(x) for x in min_part.split(": ")[1].strip()[1:-1].split(", ")])
-                hsv_max = np.array([int(x) for x in max_part.strip()[1:-1].split(", ")])
-
+                # Extraer el array HSV
+                try:
+                    hsv_value = np.array([int(x) for x in line.split("HSV: ")[1].strip()[1:-1].split(", ")])
+                    hsv_values.append(hsv_value)
+                except Exception as e:
+                    print(f"Error al procesar la línea: {line}")
+                    print(f"Detalle del error: {e}")
+                    continue
+                
+            # Generar rangos mínimos y máximos
+            if hsv_values:
+                hsv_values = np.array(hsv_values)
+                hsv_min = np.min(hsv_values, axis=0)
+                hsv_max = np.max(hsv_values, axis=0)
+                
                 # Aplicar tolerancia
                 tolerancia = np.array([10, 40, 50])  # Ajustar tolerancia para cada componente
                 hsv_min = np.clip(hsv_min - tolerancia, 0, 255)
                 hsv_max = np.clip(hsv_max + tolerancia, 0, 255)
-
-                # Añadir al listado de colores con tolerancia
+                
+                # Guardar los rangos calculados
                 colores_hsv.append((hsv_min, hsv_max))
-
+            else:
+                print("No se encontraron valores HSV válidos en el archivo.")
     except FileNotFoundError:
-        print("El archivo rangos_colores.txt no se encontró.")
+        print("El archivo colores_seleccionados.txt no se encontró.")
         sys.exit(1)
     except Exception as e:
         print(f"Error inesperado al procesar el archivo de colores: {e}")
@@ -62,6 +76,18 @@ def procesar_varios_rangos():
         mask = cv2.inRange(img_hsv, hsv_min, hsv_max)
         mask_total = mask if mask_total is None else cv2.bitwise_or(mask_total, mask)
 
+    # Encontrar contornos en la máscara
+    contours, _ = cv2.findContours(mask_total, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Filtrar el contorno más grande
+    if contours:
+        largest_contour = max(contours, key=cv2.contourArea)
+        mask_largest = np.zeros_like(mask_total)
+        cv2.drawContours(mask_largest, [largest_contour], -1, 255, thickness=cv2.FILLED)
+        mask_total = mask_largest
+    else:
+        print("No se encontraron regiones en la máscara.")
+
     # Guardar la máscara como archivo .npy para que Pincel.py la pueda leer
     ruta_mask_varios = os.path.join(ruta_base, 'colores', 'mascara_varios_rangos.npy')
     np.save(ruta_mask_varios, mask_total)
@@ -70,9 +96,10 @@ def procesar_varios_rangos():
     resultado = cv2.bitwise_and(img, img, mask=mask_total)
     ruta_imagen_lago = os.path.join(ruta_base, 'Imagenes', 'resultado_varios_rangos.jpg')
     cv2.imwrite(ruta_imagen_lago, resultado)
-    print("Imagen procesada con varios rangos guardada como resultado_varios_rangos.png")
+    print("Imagen procesada con varios rangos guardada como resultado_varios_rangos.jpg")
 
     return ruta_mask_varios  # Retornar la ruta de la máscara guardada
+
 
 
 def procesar_un_rango():
