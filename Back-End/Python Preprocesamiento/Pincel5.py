@@ -65,7 +65,7 @@ def paint(event, x, y, flags, param):
         ultimo_punto = None  # Reiniciar al soltar el botón del mouse
 
 # Cargar la imagen
-image = cv2.imread('Imagenes/Lago 4.jpg')
+image = cv2.imread('Imagenes/ImagenAplanada.jpg')
 if image is None:
     raise ValueError("No se pudo cargar la imagen.")
 
