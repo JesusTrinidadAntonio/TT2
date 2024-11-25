@@ -118,7 +118,7 @@ def procesar_un_rango():
                 hsv_max = np.array([int(x) for x in max_part.strip()[1:-1].split(", ")])
 
                 # Aplicar tolerancia
-                tolerancia = np.array([10, 40, 50])  # Ajustar tolerancia para cada componente
+                tolerancia = np.array([20, 40, 100])  # Ajustar tolerancia para cada componente
                 hsv_min = np.clip(hsv_min - tolerancia, 0, 255)
                 hsv_max = np.clip(hsv_max + tolerancia, 0, 255)
 

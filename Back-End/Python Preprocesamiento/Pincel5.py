@@ -65,11 +65,11 @@ def paint(event, x, y, flags, param):
         ultimo_punto = None  # Reiniciar al soltar el botón del mouse
 
 # Cargar la imagen
-image = cv2.imread('Imagenes/ImagenSaturada.jpg')
+image = cv2.imread('Imagenes/Lago 4.jpg')
 if image is None:
     raise ValueError("No se pudo cargar la imagen.")
 
-segmented_image = preprocess_image(image, k=6)
+segmented_image = preprocess_image(image, k=4)
 # Crear la máscara (con un canal alfa para la transparencia)
 mask = np.zeros_like(image, dtype=np.uint8)
 
@@ -106,7 +106,7 @@ while True:
     elif key == ord('s'):  # Guardar la máscara en binario
         # Convertir la máscara en binario: píxeles rojos a 1, resto a 0
         mask_binary = np.where((mask[:, :, 2] == 255), 1, 0).astype(np.uint8) * 255
-        cv2.imwrite('Pincel/Imagenes/pincel_masked.png', mask_binary)
+        cv2.imwrite('Imagenes/pincel_masked.png', mask_binary)
         print("Máscara guardada en formato binario como pincel_masked.png")
 
 # Limpiar y cerrar ventanas

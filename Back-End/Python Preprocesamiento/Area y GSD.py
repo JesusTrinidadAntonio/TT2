@@ -5,12 +5,9 @@ import os
 import math
 
 # Verificar y capturar argumentos
-if len(sys.argv) > 1:
-    try:
-        pixel_size = float(sys.argv[1])  # Convertir a número flotante
-    except ValueError:
-        print("El valor de 'respuesta_tamano' debe ser un número.")
-        sys.exit(1)
+if len(sys.argv) > 2:
+    pixel_size = float(sys.argv[1])  # Convertir a número flotante
+    ruta_mask_uno = sys.argv[2]
 else:
     print("No se proporcionaron argumentos suficientes.")
     sys.exit(1)
@@ -34,18 +31,22 @@ perimeter = 0
 for contour in contours:
     perimeter += cv2.arcLength(contour, closed=True)
 
-perimeter_metros= math.sqrt(perimeter)
+
 white_pixels_count = np.sum(binary_image == 255)
 
 # Calcular el área total en metros cuadrados
 total_area_m2 = white_pixels_count * pixel_size
 
 print(f"El área de los píxeles blancos es: {total_area_m2:.2f} metros cuadrados")
-print(f"Perímetro del contorno: {perimeter_metros} metros")
+print(f"Perímetro del contorno: {perimeter} pixeles")
 
+referencia = cv2.imread('Imagenes/resultado_un_rango.jpg', cv2.IMREAD_GRAYSCALE)
 # Visualizar la imagen del contorno
 cv2.imshow("Contorno", contour_image)
 cv2.imshow("area", binary_image)
+cv2.imshow("referencia", referencia)
+
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
