@@ -74,6 +74,13 @@ def paint(event, x, y, flags, param):
             last_point = (x, y)  # Actualizar la última posición del mouse
             output = cv2.addWeighted(overlay, 0.3, img, 0.7, 0)
 
+#    elif event == cv2.EVENT_MOUSEWHEEL:
+#        # Si el desplazamiento es positivo, la rueda sube; si es negativo, la rueda baja
+#        if flags > 0:
+#            brush_size = min(brush_size + 5, 100)
+#        else:
+#             brush_size = max(brush_size - 5, 1)
+
     elif event == cv2.EVENT_LBUTTONDOWN:
         # Comprobar si se ha hecho clic en algún botón
         if button_reset[0] <= x - img.shape[1] <= button_reset[2] and button_reset[1] <= y <= button_reset[3]:
@@ -82,6 +89,7 @@ def paint(event, x, y, flags, param):
             output = img.copy()
             mask.fill(0)
             print("Malla roja reiniciada.")
+        
 
         elif button_save[0] <= x - img.shape[1] <= button_save[2] and button_save[1] <= y <= button_save[3]:
             # Combinar la máscara actual con la máscara cargada
@@ -92,10 +100,12 @@ def paint(event, x, y, flags, param):
             binary_img[combined_mask != 0] = (255, 255, 255)
             ruta = os.path.join(ruta_base, 'Imagenes', 'binarizada.jpg')
             cv2.imwrite(ruta, binary_img)
-            print("Imagen combinada guardada como 'binarizada.jpg'.")
 
             os.chdir(os.path.dirname(__file__))
             subprocess.run(["python", "pixel.py", str(respuesta_tamano), str(ruta_mask_uno)])
+
+            cv2.destroyAllWindows()
+            exit()
 
 
         elif button_close[0] <= x - img.shape[1] <= button_close[2] and button_close[1] <= y <= button_close[3]:

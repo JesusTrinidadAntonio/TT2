@@ -6,13 +6,9 @@ import subprocess
 
 # Verificar y capturar argumentos
 if len(sys.argv) > 2:
-    try:
-        respuesta_tamano = float(sys.argv[1])  # Convertir a número flotante
-    except ValueError:
-        print("El valor de 'respuesta_tamano' debe ser un número.")
-        sys.exit(1)
-
+    respuesta_tamano = float(sys.argv[1])  # Convertir a número flotante
     ruta_mask_uno = sys.argv[2]
+
 else:
     print("No se proporcionaron argumentos suficientes.")
     sys.exit(1)
@@ -41,5 +37,5 @@ pixel_size = respuesta_tamano / white_pixels_count
 
 
 os.chdir(os.path.dirname(__file__))
-subprocess.run(["python", "Area y GSD.py", str(pixel_size)])
+subprocess.run(["python", "Area y GSD.py", str(pixel_size), str(ruta_mask_uno)])
 
