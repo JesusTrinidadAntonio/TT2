@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import sys
 import os
-import math
+import json
 
 # Verificar y capturar argumentos
 if len(sys.argv) > 2:
@@ -11,6 +11,19 @@ if len(sys.argv) > 2:
 else:
     print("No se proporcionaron argumentos suficientes.")
     sys.exit(1)
+
+
+
+with open('config.json', 'r') as file:
+    config = json.load(file)
+
+# Extraer variables del JSON
+sensor_width_mm = config["sensor_width_mm"]
+image_width_px = config["image_width_px"]
+altitude_m = config["altitude_m"]
+focal_distance_mm= config["focal_distance_mm"]
+
+GSD = (sensor_width_mm*altitude_m)/(image_width_px*focal_distance_mm)
 
 os.chdir(os.path.dirname(__file__))
 binary_image = cv2.imread('Imagenes/binarizada.jpg', cv2.IMREAD_GRAYSCALE)
@@ -31,6 +44,7 @@ perimeter = 0
 for contour in contours:
     perimeter += cv2.arcLength(contour, closed=True)
 
+perimeter_m = perimeter * GSD
 
 white_pixels_count = np.sum(binary_image == 255)
 
@@ -38,7 +52,7 @@ white_pixels_count = np.sum(binary_image == 255)
 total_area_m2 = white_pixels_count * pixel_size
 
 print(f"El área de los píxeles blancos es: {total_area_m2:.2f} metros cuadrados")
-print(f"Perímetro del contorno: {perimeter} pixeles")
+print(f"Perímetro del contorno: {perimeter_m:.2f} metros")
 
 
 cv2.waitKey(0)
