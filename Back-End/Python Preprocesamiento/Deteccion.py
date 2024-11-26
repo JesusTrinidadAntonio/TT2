@@ -109,5 +109,5 @@ ruta_mask_varios = procesar_varios_rangos()
 os.chdir(os.path.dirname(__file__))
 subprocess.run([
     "python", "Pincel.py",
-    str(ruta_mask_varios), str(respuesta_tamano), str(ruta_combinada)
+    str(ruta_mask_varios), str(respuesta_tamano), str(ruta_combinada), str(ruta_imagen_saturada)
 ])
