@@ -59,7 +59,7 @@ last_point = None
 
 # Función para manejar los eventos del pincel
 def paint(event, x, y, flags, param):
-    global painting, erasing, overlay, mask, last_point
+    global painting, erasing, overlay, mask, last_point, brush_size
 
     # Solo permitir pintar en el área de la imagen (excluir el panel de botones)
     if x < img.shape[1]:
@@ -114,6 +114,14 @@ def paint(event, x, y, flags, param):
             subprocess.run(["python", "pincel5.py", str(respuesta_tamano), str(ruta_combinada), str(ruta_imagen_aplanada)])
             cv2.destroyAllWindows()
             exit()
+
+    # Detectar el desplazamiento de la rueda del ratón para cambiar el tamaño del pincel
+    elif event == cv2.EVENT_MOUSEWHEEL:
+        if flags > 0:  # Rueda hacia arriba
+            brush_size += 1
+        elif flags < 0:  # Rueda hacia abajo
+            brush_size = max(1, brush_size - 1)  # Evitar que el tamaño sea menor a 1
+        print(f"Tamaño del pincel: {brush_size}")
 
 # Dibujar los botones
 def draw_buttons(panel):

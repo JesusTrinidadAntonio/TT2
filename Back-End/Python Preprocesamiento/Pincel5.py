@@ -16,7 +16,7 @@ else:
 # Variables globales
 drawing = False  # Verdadero si el mouse está presionado
 erasing = False
-brush_size = 5  # Tamaño del pincel
+brush_size = 5  # Tamaño del pincel inicial
 color_solid = (0, 0, 255)  # Rojo sólido
 mostrar = True
 flood_fill_mode = False
@@ -68,6 +68,14 @@ def paint(event, x, y, flags, param):
         elif event == cv2.EVENT_LBUTTONUP:
             drawing = False
             ultimo_punto = None  # Reiniciar al soltar el botón del mouse
+
+        # Detectar el desplazamiento de la rueda del ratón para cambiar el tamaño del pincel
+        elif event == cv2.EVENT_MOUSEWHEEL:
+            if flags > 0:  # Rueda hacia arriba
+                brush_size += 1
+            elif flags < 0:  # Rueda hacia abajo
+                brush_size = max(1, brush_size - 1)  # Evitar que el tamaño sea menor a 1
+            print(f"Tamaño del pincel: {brush_size}")
 
 # Función para manejar clics en el menú
 def handle_menu_click(x, y):
