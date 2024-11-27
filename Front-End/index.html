@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Datos</title>
+</head>
+<body>
+    <h1>Formulario de Datos</h1>
+
+    <!-- Formulario -->
+    <form id="dataForm">
+        <!-- Pregunta 1: Cantidad de colores -->
+        <label for="colores">¿Cuántos colores tiene el cuerpo de agua?</label><br>
+        <input type="number" id="colores" name="colores" required><br><br>
+
+        <!-- Pregunta 2: Tamaño del objeto -->
+        <label for="tamano">¿Qué tamaño tiene el objeto de referencia en metros cuadrados?</label><br>
+        <input type="number" id="tamano" name="tamano" required><br><br>
+
+        <!-- Selector de archivo -->
+        <label for="imagen">Selecciona una imagen:</label><br>
+        <input type="file" id="imagen" name="imagen" accept="image/*" required><br><br>
+
+        <!-- Botón para enviar el formulario -->
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script src="script.js"></script>
+</body>
+</html>
