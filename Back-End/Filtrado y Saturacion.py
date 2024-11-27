@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import cv2
 import numpy as np
 import os
 import subprocess
 
 app = Flask(__name__)
+CORS(app)  # Habilitar CORS para todas las rutas
 
 @app.route('/submit_form', methods=['POST'])
 def submit_form():
@@ -46,9 +48,10 @@ def submit_form():
     # Cambiar al directorio del archivo actual y ejecutar el siguiente script
     os.chdir(os.path.dirname(__file__))
     subprocess.run([
-     "python", "Color.py",
-     str(respuestas_colores), str(respuestas_tamano), str(ruta_imagen_aplanada)
+        "python", "Color.py",
+        str(respuestas_colores), str(respuestas_tamano), str(ruta_imagen_aplanada)
     ])
+
     return jsonify({
         'mensaje': 'Imagen procesada y datos recibidos correctamente.',
         'ruta_imagen_aplanada': ruta_imagen_aplanada
@@ -59,3 +62,5 @@ if __name__ == '__main__':
     os.makedirs('uploads', exist_ok=True)
     os.makedirs('Imagenes', exist_ok=True)
     app.run(debug=True)
+
+
