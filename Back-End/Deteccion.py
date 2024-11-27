@@ -8,6 +8,7 @@ import subprocess
 if len(sys.argv) > 2:
     ruta_imagen_saturada = sys.argv[1]
     respuesta_tamano = sys.argv[2]  # No utilizado directamente, pero se mantiene para consistencia
+    ruta_combinada = sys.argv[3]
 else:
     print("No se proporcionaron argumentos suficientes.")
     sys.exit(1)
@@ -101,57 +102,12 @@ def procesar_varios_rangos():
     return ruta_mask_varios  # Retornar la ruta de la máscara guardada
 
 
-
-def procesar_un_rango():
-    try:
-        ruta_base = os.path.dirname(os.path.abspath(__file__))
-        ruta_archivo = os.path.join(ruta_base, "colores", "rango.txt")
-        with open(ruta_archivo, "r") as f:
-            line = f.readline().strip()
-            if line:
-                # Extraer los valores mínimos y máximos del archivo
-                min_part = line.split("], Max: ")[0]
-                max_part = line.split("], Max: ")[1]
-
-                # Convertir el texto a arrays de NumPy y aplicar una tolerancia
-                hsv_min = np.array([int(x) for x in min_part.split(": ")[1].strip()[1:-1].split(", ")])
-                hsv_max = np.array([int(x) for x in max_part.strip()[1:-1].split(", ")])
-
-                # Aplicar tolerancia
-                tolerancia = np.array([10, 40, 50])  # Ajustar tolerancia para cada componente
-                hsv_min = np.clip(hsv_min - tolerancia, 0, 255)
-                hsv_max = np.clip(hsv_max + tolerancia, 0, 255)
-
-    except FileNotFoundError:
-        print("El archivo rango.txt no se encontró.")
-        sys.exit(1)
-    except Exception as e:
-        print(f"Error inesperado al procesar el archivo de colores: {e}")
-        sys.exit(1)
-
-    # Crear la máscara para el único rango de color
-    mask = cv2.inRange(img_hsv, hsv_min, hsv_max)
-
-    # Guardar la máscara como archivo .npy para que Pincel.py la pueda leer
-    ruta_mask_uno = os.path.join(ruta_base, 'colores', 'mascara_un_rango.npy')
-    np.save(ruta_mask_uno, mask)
-
-    # Aplicar la máscara a la imagen original y guardar el resultado
-    ruta_imagen_objeto = os.path.join(ruta_base, 'Imagenes', 'resultado_un_rango.jpg')
-    resultado = cv2.bitwise_and(img, img, mask=mask)
-    cv2.imwrite(ruta_imagen_objeto, resultado)
-    print("Imagen procesada con un rango guardada como resultado_un_rango.png")
-
-    return ruta_mask_uno  # Retornar la ruta de la máscara guardada
-
-
 # Ejecutar ambas funciones y obtener las rutas de las máscaras guardadas
 ruta_mask_varios = procesar_varios_rangos()
-ruta_mask_uno = procesar_un_rango()
 
 # Ejecutar Pincel.py pasando las rutas de las máscaras como argumentos
 os.chdir(os.path.dirname(__file__))
 subprocess.run([
     "python", "Pincel.py",
-    str(ruta_mask_varios), str(ruta_mask_uno), str(respuesta_tamano)
+    str(ruta_mask_varios), str(respuesta_tamano), str(ruta_combinada), str(ruta_imagen_saturada)
 ])
