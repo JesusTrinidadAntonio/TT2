@@ -1,8 +1,8 @@
 [
     {
-        "sensor": "6.17",
-        "altitud": "50",
-        "focal": "24",
+        "sensor": "5",
+        "altitud": "5",
+        "focal": "5",
         "imagen_tamano": 600
     }
 ]
