@@ -73,7 +73,7 @@ resultados_json = {
 with open('resultados.json', 'w') as json_file:
         json.dump(resultados_json, json_file, indent=4)
 
-print("Resultados calculados y almacenados correctamente.")
+
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
