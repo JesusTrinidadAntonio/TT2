@@ -1,23 +1,27 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask import Flask, request, jsonify, render_template 
+from PIL import Image
 import cv2
 import numpy as np
 import os
 import subprocess
+import json
+import time
 
 app = Flask(__name__)
-CORS(app)  # Habilitar CORS para todas las rutas
 
 @app.route('/submit_form', methods=['POST'])
 def submit_form():
     # Obtener los datos del formulario
     respuestas_colores = int(request.form['colores'])  # Cantidad de rangos de colores
     respuestas_tamano = request.form['tamano']         # Tamaño del objeto
-    imagen = request.files['imagen']                    # La imagen es enviada como un archivo
+    sensor = request.form['sensor']                     # Sensor
+    altitud = request.form['altitud']                   # Altitud
+    focal = request.form['focal']                       # Focal
+    imagen = request.files['imagen']                    # La imagen recibida como archivo
 
-    # Guardar la imagen en un directorio específico
+        # Guardar la imagen en un directorio específico
     if imagen:
-        ruta_imagen = os.path.join('uploads', imagen.filename)
+        ruta_imagen = os.path.join('imagenes', "Cuerpo_Agua.jpg")
         imagen.save(ruta_imagen)
     else:
         return jsonify({'error': 'No se proporcionó una imagen.'}), 400
@@ -26,6 +30,39 @@ def submit_form():
     imagen_cargada = cv2.imread(ruta_imagen)
     if imagen_cargada is None:
         return jsonify({'error': 'No se pudo cargar la imagen.'}), 400
+    
+
+    try:
+        img = Image.open(imagen)  # Usamos PIL para abrir la imagen
+        ancho, alto = img.size  # Devuelve una tupla (ancho, alto)
+    except Exception as e:
+        return f"Error al abrir la imagen: {e}", 400
+
+    # Mostrar el tamaño de la imagen
+    print(f"Tamaño de la imagen: {ancho} x {alto} píxeles")
+
+    # Datos a guardar (puedes incluir el tamaño de la imagen si lo deseas)
+    new_data = {
+        'sensor': sensor,
+        'altitud': altitud,
+        'focal': focal,
+        'imagen_tamano': ancho  # Solo el ancho de la imagen
+    }
+
+    # Intentar leer el archivo JSON y cargar los datos existentes
+    try:
+        with open('datos.json', 'r') as file:
+            data = []  # Leer datos existentes
+    except (FileNotFoundError, json.JSONDecodeError):
+        data = []  # Si no existe o si hay un error al leer, usamos una lista vacía
+
+    # Agregar los nuevos datos
+    data.append(new_data)
+
+    # Guardar los datos actualizados en el archivo JSON
+    with open('datos.json', 'w') as file:
+        json.dump(data, file, indent=4)
+
 
     # Procesamiento de la imagen
     imagen_suavizada = cv2.GaussianBlur(imagen_cargada, (5, 5), 0)
@@ -48,19 +85,24 @@ def submit_form():
     # Cambiar al directorio del archivo actual y ejecutar el siguiente script
     os.chdir(os.path.dirname(__file__))
     subprocess.run([
-        "python", "Color.py",
-        str(respuestas_colores), str(respuestas_tamano), str(ruta_imagen_aplanada)
+     "python", "Color.py",
+     str(respuestas_colores),str(respuestas_tamano),str(ruta_imagen_aplanada)
     ])
 
-    return jsonify({
-        'mensaje': 'Imagen procesada y datos recibidos correctamente.',
-        'ruta_imagen_aplanada': ruta_imagen_aplanada
-    })
+    while True:
+        time.sleep(1)  # Esperar un segundo antes de volver a verificar
+        if os.path.exists('resultados.json'):
+            with open('resultados.json', 'r') as json_file:
+                data = json.load(json_file)
+                if data.get('procesado', False):
+                    # Los resultados están listos, retornamos los datos a resultado.html
+                    return render_template("resultado.html", resultados=data['resultados'])
+
+    # Si no se encuentran resultados después de un tiempo (puedes agregar un límite de tiempo)
+    return "Error: Los resultados no están disponibles aún.", 500
 
 if __name__ == '__main__':
     # Asegurarse de que el directorio de 'uploads' y 'Imagenes' existan
-    os.makedirs('uploads', exist_ok=True)
+    #os.makedirs('uploads', exist_ok=True)
     os.makedirs('Imagenes', exist_ok=True)
     app.run(debug=True)
-
-
