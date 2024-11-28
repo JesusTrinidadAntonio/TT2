@@ -1,0 +1,20 @@
+<%- include('partials/_dashboard') %>
+
+<div class="datos_usuario">
+    <h2>Nombre:</h2>
+    <h3 name="nombre_cuerpo_a"><%= data.nombre_cuerpo_a %> </h3>
+    <h2>Fecha de registro:</h2>
+    <h3 name="fecha_cuerpo_a"><%= new Date(data.fecha_cuerpo_a).toLocaleDateString('es-ES') %> </h3>
+    <h2>Área aproximada(m<sup>2</sup>):</h2>
+    <h3 name="area_cuerpo_a"> <%= data.area_cuerpo_a %> </h3>
+    <h2>Perímetro aproximado(m):</h2>
+    <h3 name="perimetro_cuerpo_a"> <%= data.perimetro_cuerpo_a %> </h3>
+    <div style="text-align: center; padding: 40px;" >
+    <a href="/mod_reg/<%= data.id_cuerpo_a %>" style="margin-right: 60px;" class="modificar">MODIFICAR</a>
+    <a href="/del_reg/<%= data.id_cuerpo_a %>" class="modificar">ELIMINAR</a>
+
+</div>
+</div>
+</body>
+</html>
+

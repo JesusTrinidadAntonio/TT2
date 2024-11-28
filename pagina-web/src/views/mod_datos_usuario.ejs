@@ -1,0 +1,20 @@
+<%- include('partials/_dashboard') %>
+
+    <div class="datos_usuario">
+        <form action="/cambio_datos %>" method="post">
+            <div class="form-group">
+                <input type="text" name="nombres_usuario" value="<%= data.nombres_usuario %>" class="form-control">
+            </div>
+            <div class="form-group">
+                <input type="text" name="apellidos_usuario" value="<%= data.apellidos_usuario %>" class="form-control">
+            </div>
+            <div class="form-group">
+                <input type="email" name="correo_usuario" value="<%= data.correo_usuario %>" class="form-control">
+            </div>
+            <div class="form-group">
+                <input type="password" name="contraseña_usuario" value="<%= data.contraseña_usuario %>" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-outline-success"> GUARDAR</button>
+            <a href="/datos_personales" class="btn btn-outline-danger"> CANCELAR</a>
+        </form>
+    </div>
