@@ -103,7 +103,7 @@ image = cv2.imread(ruta_imagen_aplanada)
 if image is None:
     raise ValueError("No se pudo cargar la imagen.")
 
-segmented_image = preprocess_image(image, k=5)
+segmented_image = preprocess_image(image, k=7)
 mask = np.zeros_like(image, dtype=np.uint8)  # Crear la máscara
 
 # Crear una ventana y asignar la función de callback
