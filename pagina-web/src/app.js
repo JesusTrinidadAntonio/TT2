@@ -3,9 +3,11 @@ const path= require('path');//Modulo que une directorios
 const morgan= require('morgan');
 const mysql= require('mysql');
 const myConnection= require('express-myconnection');
-
+const dotenv= require('dotenv');
+const session = require('express-session');
 const app = express();
 
+//dotenv.config({path: './env'});
 //importando rutas 
 const usuarioRoutes= require('./routes/glbRoutes');
 
@@ -22,6 +24,13 @@ app.set('views', path.join(__dirname, 'views'));
 //Configuramos los middlewares
 app.use(morgan('dev'));//Registra las peticiones entrantes
 
+//Configuramos las sesiones para el login
+app.use(session({
+    secret:'tt_b049',
+    resave: false,
+    saveUninitialized:true,
+    cookie: {secure: false}
+}));
 
 //Configuracion de mysql
 app.use(myConnection(mysql, {
@@ -29,7 +38,7 @@ app.use(myConnection(mysql, {
     user: 'sergio',
     password: 'password',
     port:3306,
-    database: '2024_b049'
+    database: 'db_b049'
 },'single'));
 
 //Nos sirve a que podamos entender los datos del formulario

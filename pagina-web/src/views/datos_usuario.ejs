@@ -1,0 +1,14 @@
+<%- include('partials/_dashboard') %>
+
+<div class="datos_usuario" >
+    <img src="img/ajolote.jpg" alt="">
+    <H1>DATOS DE USUARIO</H1>
+    <h2>Nombre(s): </h2><h3 name="nombres_usuario"> <%= data.nombres_usuario %> </h3>
+    <H2>Apellido(s):</H2><h3 name="apellidos_usuario"> <%= data.apellidos_usuario %> </h3>
+    <H2>Correo electrónico:</H2><h3 name="correo_usuario"> <%= data.correo_usuario %> </h3>
+    <div style="text-align: center;">
+    <a class="modificar" style="margin-top: 30px; position:absolute;"  href="/modificar_datos">MODIFICAR</a>
+    </div>
+</div>
+</body>
+</html>
