@@ -53,7 +53,7 @@ panel = np.ones((img_height, panel_width, 3), dtype=np.uint8) * 200  # Fondo gri
 def draw_buttons(panel, perimeter_m, total_area_m2):
     # Texto de los resultados
     cv2.putText(panel, f"Perimeter: {perimeter_m:.2f} m", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
-    cv2.putText(panel, f"Area: {total_area_m2:.2f} m²", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
+    cv2.putText(panel, f"Area: {total_area_m2:.2f} m2", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
 
     # Botones para registrar y descartar
     button_height = 60  # Alto de los botones
