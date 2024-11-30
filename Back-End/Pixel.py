@@ -3,14 +3,18 @@ import numpy as np
 import sys
 import os
 import subprocess
+import json
 
-# Verificar y capturar argumentos
-if len(sys.argv) > 2:
-    respuesta_tamano = float(sys.argv[1])  # Convertir a número flotante
-    ruta_imagen = sys.argv[2]  # Ruta de la imagen combinada
-else:
-    print("No se proporcionaron argumentos suficientes.")
-    sys.exit(1)
+# Abrir el archivo y cargar el contenido JSON
+with open('datos.json', 'r') as file:
+    config_list = json.load(file)
+
+if config_list:
+    # Obtener la primera configuración desde el archivo JSON
+    config = config_list[0]
+    respuesta_tamano = float(config["tamano"])
+
+ruta_imagen = 'Imagenes/figura_combinada.jpg'
 
 # Cargar la imagen combinada
 try:
@@ -40,10 +44,25 @@ if white_pixels_count == 0:
 # Calcular el tamaño de cada píxel
 pixel_size = respuesta_tamano / white_pixels_count
 
-# Imprimir resultados
-print(f"Número de píxeles blancos: {white_pixels_count}")
-print(f"Tamaño de cada píxel calculado: {pixel_size}")
+
+    # Datos a guardar (puedes incluir el tamaño de la imagen si lo deseas)
+pixel = {
+        'pixel_tam': pixel_size,
+    }
+
+try:
+        with open('datos.json', 'r') as file:
+            data = json.load(file)  # Cargar los datos existentes
+except (FileNotFoundError, json.JSONDecodeError):
+        data = []  # Si no existe o si hay un error al leer, usamos una lista vacía
+
+    # Agregar los nuevos datos
+data.append(pixel)
+
+    # Guardar los datos actualizados en el archivo JSON
+with open('datos.json', 'w') as file:
+        json.dump(data, file, indent=4)
 
 # Cambiar al directorio del archivo actual y ejecutar el siguiente script
 os.chdir(os.path.dirname(__file__))
-subprocess.run(["python", "Area y GSD.py", str(pixel_size), str(ruta_imagen)])
+#subprocess.run(["python", "Area y GSD.py", str(pixel_size), str(ruta_imagen)])

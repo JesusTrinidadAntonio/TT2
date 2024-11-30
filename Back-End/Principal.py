@@ -1,25 +1,26 @@
-from flask import Flask, request, jsonify, render_template 
+from flask import Flask, request, jsonify, render_template
 from PIL import Image
 import cv2
-import numpy as np
 import os
-import subprocess
 import json
-import time
+import subprocess
 
 app = Flask(__name__)
 
 @app.route('/submit_form', methods=['POST'])
 def submit_form():
     # Obtener los datos del formulario
-    respuestas_colores = int(request.form['colores'])  # Cantidad de rangos de colores
-    respuestas_tamano = request.form['tamano']         # Tamaño del objeto
-    sensor = request.form['sensor']                     # Sensor
-    altitud = request.form['altitud']                   # Altitud
-    focal = request.form['focal']                       # Focal
-    imagen = request.files['imagen']                    # La imagen recibida como archivo
+    try:
+        respuestas_colores = int(request.form['colores'])  # Cantidad de rangos de colores
+        respuestas_tamano = request.form['tamano']         # Tamaño del objeto
+        sensor = request.form['sensor']                     # Sensor
+        altitud = request.form['altitud']                   # Altitud
+        focal = request.form['focal']                       # Focal
+        imagen = request.files['imagen']                    # La imagen recibida como archivo
+    except Exception as e:
+        return jsonify({'error': f'Ocurrió un error al procesar los datos del formulario: {e}'}), 400
 
-        # Guardar la imagen en un directorio específico
+    # Guardar la imagen en un directorio específico
     if imagen:
         ruta_imagen = os.path.join('imagenes', "Cuerpo_Agua.jpg")
         imagen.save(ruta_imagen)
@@ -30,20 +31,16 @@ def submit_form():
     imagen_cargada = cv2.imread(ruta_imagen)
     if imagen_cargada is None:
         return jsonify({'error': 'No se pudo cargar la imagen.'}), 400
-    
 
-    try:
-        img = Image.open(imagen)  # Usamos PIL para abrir la imagen
-        ancho, alto = img.size  # Devuelve una tupla (ancho, alto)
-    except Exception as e:
-        return f"Error al abrir la imagen: {e}", 400
+    # Obtener el tamaño de la imagen con OpenCV (usamos ancho y alto directamente)
+    ancho, alto = imagen_cargada.shape[1], imagen_cargada.shape[0]
 
     # Mostrar el tamaño de la imagen
     print(f"Tamaño de la imagen: {ancho} x {alto} píxeles")
 
     # Datos a guardar (puedes incluir el tamaño de la imagen si lo deseas)
     new_data = {
-        'color':respuestas_colores,
+        'color': respuestas_colores,
         'tamano': respuestas_tamano,
         'sensor': sensor,
         'altitud': altitud,
@@ -55,7 +52,7 @@ def submit_form():
     # Intentar leer el archivo JSON y cargar los datos existentes
     try:
         with open('datos.json', 'r') as file:
-            data = []  # Leer datos existentes
+            data = []  # Cargar los datos existentes
     except (FileNotFoundError, json.JSONDecodeError):
         data = []  # Si no existe o si hay un error al leer, usamos una lista vacía
 
@@ -66,26 +63,28 @@ def submit_form():
     with open('datos.json', 'w') as file:
         json.dump(data, file, indent=4)
 
+# Ejecución del flujo de trabajo
+    try:
+        # Ejecutar los scripts en orden secuencial
+        subprocess.run(["python", "Filtrado y Saturacion.py"], check=True)
+        subprocess.run(["python", "Color.py"], check=True)
+        subprocess.run(["python", "Deteccion.py"], check=True)
+        subprocess.run(["python", "Pincel.py"], check=True)
+        subprocess.run(["python", "Pixel.py"], check=True)
+        subprocess.run(["python", "Area y GSD.py"], check=True)
 
-#   # Cambiar al directorio del archivo actual y ejecutar el siguiente script
-#   os.chdir(os.path.dirname(__file__))
-#   subprocess.run([
-#    "python", "Filtrado y Saturacion.py",
-#    str(ruta_imagen)
-#   ])
-#
-#   while True:
-#       time.sleep(1)  # Esperar un segundo antes de volver a verificar
-#       if os.path.exists('resultados.json'):
-#           with open('resultados.json', 'r') as json_file:
-#               data = json.load(json_file)
-#               if data.get('procesado', False):
-#                   # Los resultados están listos, retornamos los datos a resultado.html
-#                   return render_template("resultado.html", resultados=data['resultados'])
-#
-#   # Si no se encuentran resultados después de un tiempo (puedes agregar un límite de tiempo)
-#   return "Error: Los resultados no están disponibles aún.", 500
+    except subprocess.CalledProcessError as e:
+        # Si algún script falla, devolvemos un error
+        return jsonify({'error': f'No se completo el flujo: {str(e)}'}), 500
+
+
+    # Devolver una respuesta exitosa al cliente
+    return jsonify({
+        'success': True,
+        'message': 'Formulario procesado correctamente',
+        'image_path': ruta_imagen  # Ruta donde se guardó la imagen
+    })
 
 if __name__ == '__main__':
-    os.makedirs('Imagenes', exist_ok=True)
+    os.makedirs('imagenes', exist_ok=True)  # Crear el directorio si no existe
     app.run(debug=True)

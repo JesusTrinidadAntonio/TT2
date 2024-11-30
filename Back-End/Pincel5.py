@@ -4,14 +4,8 @@ import sys
 import os
 import subprocess
 
-# Verificar y capturar argumentos de línea de comandos
-if len(sys.argv) > 2:  
-    respuesta_tamano = float(sys.argv[1])  # Tamaño del objeto de referencia
-    ruta_combinada = sys.argv[2]
-    ruta_imagen_aplanada = sys.argv[3]
-else:
-    print("No se proporcionaron argumentos suficientes.")
-    sys.exit(1)
+ruta_mask_varios = 'colores/mascara_varios_rangos.npy'
+ruta_imagen_aplanada = 'Imagenes/ImagenAplanada.jpg'
 
 # Variables globales
 drawing = False  # Verdadero si el mouse está presionado
@@ -140,7 +134,6 @@ while True:
     elif key == ord('f'):
         flood_fill_mode = not flood_fill_mode
     elif key == ord('s'):
-        subprocess.run(["python", "pixel.py", str(respuesta_tamano), str(ruta_combinada)])
         save_mask()
         break
 
