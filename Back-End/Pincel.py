@@ -1,18 +1,10 @@
 import cv2
 import numpy as np
-import sys
 import os
 import subprocess
 
-# Verificar y capturar argumentos
-if len(sys.argv) > 4:
-    ruta_mask_varios = sys.argv[1]
-    respuesta_tamano = sys.argv[2]
-    ruta_combinada = sys.argv[3]
-    ruta_imagen_aplanada = sys.argv[4]
-else:
-    print("No se proporcionaron argumentos suficientes.")
-    sys.exit(1)
+ruta_mask_varios = 'colores/mascara_varios_rangos.npy'
+ruta_imagen_aplanada = 'Imagenes/ImagenAplanada.jpg'
 
 # Cargar las máscaras
 mask_varios = np.load(ruta_mask_varios)
@@ -41,11 +33,11 @@ button_panel = np.ones((panel_height, button_panel_width, 3), dtype=np.uint8) * 
 
 # Variables iniciales
 overlay = np.zeros_like(img)  # Capa para pintar trazos del pincel
-mask = np.zeros(img.shape[:2], dtype=np.uint8)  # Máscara para binarización
 brush_size = 10  # Tamaño de la brocha
 painting = False
 erasing = False
 current_color = (0, 0, 255)  # Color rojo
+borrar_malla = False  # Variable para la función "Borrar Malla"
 
 # Coordenadas de los botones
 button_reset = (10, 20, 140, 60)
@@ -53,13 +45,14 @@ button_save = (10, 80, 140, 120)
 button_close = (10, 140, 140, 180)
 button_erase = (10, 200, 140, 240)
 button_manual = (10, 260, 140, 300)
+button_borrar_malla = (10, 320, 140, 360)  # Nuevo botón para "Borrar Malla"
 
 # Variable global para almacenar la última posición del mouse
 last_point = None
 
 # Función para manejar los eventos del pincel
 def paint(event, x, y, flags, param):
-    global painting, erasing, overlay, mask, last_point, brush_size
+    global painting, erasing, overlay, mask_varios, last_point, brush_size, borrar_malla
 
     # Solo permitir pintar en el área de la imagen (excluir el panel de botones)
     if x < img.shape[1]:
@@ -72,14 +65,19 @@ def paint(event, x, y, flags, param):
             last_point = None
 
         elif event == cv2.EVENT_MOUSEMOVE and painting:
-            if erasing:
+            if borrar_malla:
+                # Mostrar borrado visualmente (en overlay con verde)
+                cv2.line(overlay, last_point, (x, y), (0, 255, 0), brush_size * 2)  # Verde en overlay
+                # Borrar secciones de la máscara original (mask_varios)
+                cv2.line(mask_varios, last_point, (x, y), 0, brush_size * 2)  # Multiplicar por 0 (borrar)
+            elif erasing:
                 # Borrar en el overlay y la máscara
                 cv2.line(overlay, last_point, (x, y), (0, 0, 0), brush_size * 2)
-                cv2.line(mask, last_point, (x, y), 0, brush_size * 2)
+                cv2.line(mask_varios, last_point, (x, y), 0, brush_size * 2)  # Borrar en la máscara
             else:
                 # Pintar en el overlay y actualizar la máscara
                 cv2.line(overlay, last_point, (x, y), current_color, brush_size * 2)
-                cv2.line(mask, last_point, (x, y), 255, brush_size * 2)
+                cv2.line(mask_varios, last_point, (x, y), 255, brush_size * 2)  # Pintar en la máscara
             last_point = (x, y)
 
     # Detectar clics en los botones
@@ -87,19 +85,16 @@ def paint(event, x, y, flags, param):
         x_button = x - img.shape[1]  # Ajustar coordenada x para el panel
         if button_reset[0] <= x_button <= button_reset[2] and button_reset[1] <= y <= button_reset[3]:
             overlay.fill(0)
-            mask.fill(0)
+            mask_varios.fill(0)
             print("Reiniciado.")
         elif button_save[0] <= x_button <= button_save[2] and button_save[1] <= y <= button_save[3]:
             print("Guardando...")
-            # Combinar la máscara del pincel con la máscara de varios rangos
-            combined_mask = cv2.bitwise_or(mask, mask_varios)
             # Guardar la máscara combinada como una imagen binarizada
             binary_img = np.zeros_like(img)
-            binary_img[combined_mask > 0] = (255, 255, 255)
+            binary_img[mask_varios > 0] = (255, 255, 255)  # Usar la máscara final
             ruta_guardado = os.path.join(ruta_base, 'Imagenes', 'binarizada.jpg')
             cv2.imwrite(ruta_guardado, binary_img)
             print("Guardado completado.")
-            subprocess.run(["python", "pixel.py", str(respuesta_tamano), str(ruta_combinada)])
             cv2.destroyAllWindows()
             exit()
         elif button_close[0] <= x_button <= button_close[2] and button_close[1] <= y <= button_close[3]:
@@ -111,9 +106,12 @@ def paint(event, x, y, flags, param):
             print("Borrado activado." if erasing else "Borrado desactivado.")
         elif button_manual[0] <= x_button <= button_manual[2] and button_manual[1] <= y <= button_manual[3]:
             print("Ejecutando detección manual.")
-            subprocess.run(["python", "pincel5.py", str(respuesta_tamano), str(ruta_combinada), str(ruta_imagen_aplanada)])
+            subprocess.run(["python", "pincel5.py"])
             cv2.destroyAllWindows()
             exit()
+        elif button_borrar_malla[0] <= x_button <= button_borrar_malla[2] and button_borrar_malla[1] <= y <= button_borrar_malla[3]:
+            borrar_malla = not borrar_malla
+            print("Borrar Malla activado." if borrar_malla else "Borrar Malla desactivado.")
 
     # Detectar el desplazamiento de la rueda del ratón para cambiar el tamaño del pincel
     elif event == cv2.EVENT_MOUSEWHEEL:
@@ -136,9 +134,13 @@ def draw_buttons(panel):
     cv2.putText(panel, "Borrar", (button_erase[0] + 20, button_erase[1] + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
     cv2.rectangle(panel, (button_manual[0], button_manual[1]), (button_manual[2], button_manual[3]), (180, 180, 180), -1)
     cv2.putText(panel, "Manual", (button_manual[0] + 20, button_manual[1] + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
+    cv2.rectangle(panel, (button_borrar_malla[0], button_borrar_malla[1]), (button_borrar_malla[2], button_borrar_malla[3]), (180, 180, 180), -1)
+    cv2.putText(panel, "Borrar Malla", (button_borrar_malla[0] + 10, button_borrar_malla[1] + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
 
 # Configurar el callback del mouse
 cv2.namedWindow("Paint Tool")
+cv2.resizeWindow("Paint Tool", 1150, 660)
+cv2.moveWindow('Paint Tool', 90, 350)
 cv2.setMouseCallback("Paint Tool", paint)
 
 while True:

@@ -3,15 +3,16 @@ import numpy as np
 import sys
 import subprocess
 import os
+import json
 
-# Verificar y capturar argumentos de línea de comandos
-if len(sys.argv) > 3:
-    respuestas_colores = int(sys.argv[1])  # Cantidad de rangos de colores a seleccionar
-    respuestas_tamano = sys.argv[2]        # Tamaño del objeto de referencia (no utilizado en este código)
-    ruta_imagen = sys.argv[3]              # Ruta de la imagen a procesar
-else:
-    print("No se proporcionaron argumentos suficientes.")
-    sys.exit(1)
+# Abrir el archivo y cargar el contenido JSON
+with open('datos.json', 'r') as file:
+    config_list = json.load(file)
+
+if config_list:
+    # Obtener la primera configuración desde el archivo JSON
+    config = config_list[0]
+    respuestas_colores = config["color"] 
 
 # Variables y listas para almacenar los rangos de color en formato HSV
 rango_colores_hsv = []
@@ -20,6 +21,7 @@ hsv_min = None
 hsv_max = None
 
 # Cargar la imagen desde la ruta proporcionada
+ruta_imagen = 'Imagenes/ImagenAplanada.jpg'
 imagen = cv2.imread(ruta_imagen)
 if imagen is None:
     print(f"No se pudo cargar la imagen en la ruta: {ruta_imagen}")
@@ -151,15 +153,13 @@ def detectar_figura(event, x, y, flags, param):
         cv2.destroyAllWindows()
 
         # Llamar al próximo programa
-        subprocess.run([
-            "python", "Deteccion.py",
-            str(ruta_imagen), str(respuestas_tamano), str(ruta_combinada)
-        ])
+        #subprocess.run(["python", "Deteccion.py",])
 
 # Configuración inicial de la ventana y callback
 cv2.namedWindow("Selecciona los colores", cv2.WINDOW_NORMAL)
-cv2.resizeWindow("Selecciona los colores", 800, 800)
+cv2.resizeWindow("Selecciona los colores", 1150, 660)
 cv2.imshow("Selecciona los colores", imagen)
+cv2.moveWindow('Selecciona los colores', 90, 350) 
 cv2.setMouseCallback("Selecciona los colores", seleccionar_multiples_colores)  # Iniciar con la selección de múltiples colores
 
 cv2.waitKey(0)
