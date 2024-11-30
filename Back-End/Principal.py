@@ -68,6 +68,7 @@ def submit_form():
         # Ejecutar los scripts en orden secuencial
         subprocess.run(["python", "Filtrado y Saturacion.py"], check=True)
         subprocess.run(["python", "Color.py"], check=True)
+        subprocess.run(["python", "Referencia.py"], check=True)
         subprocess.run(["python", "Deteccion.py"], check=True)
         subprocess.run(["python", "Pincel.py"], check=True)
         subprocess.run(["python", "Pixel.py"], check=True)
