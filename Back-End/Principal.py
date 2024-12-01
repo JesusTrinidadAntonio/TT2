@@ -87,5 +87,6 @@ def submit_form():
     })
 
 if __name__ == '__main__':
-    os.makedirs('imagenes', exist_ok=True)  # Crear el directorio si no existe
+    os.makedirs('Imagenes', exist_ok=True)  # Crear el directorio si no existe
+    os.makedirs('colores', exist_ok=True)  # Crear el directorio si no existe
     app.run(debug=True)
