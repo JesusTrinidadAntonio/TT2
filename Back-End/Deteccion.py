@@ -4,14 +4,7 @@ import sys
 import os
 import subprocess
 
-# Verificar y capturar argumentos
-if len(sys.argv) > 2:
-    ruta_imagen_saturada = sys.argv[1]
-    respuesta_tamano = sys.argv[2]  # No utilizado directamente, pero se mantiene para consistencia
-    ruta_combinada = sys.argv[3]
-else:
-    print("No se proporcionaron argumentos suficientes.")
-    sys.exit(1)
+ruta_imagen_saturada = 'Imagenes/ImagenAplanada.jpg'
 
 # Cargar la imagen saturada
 img = cv2.imread(ruta_imagen_saturada)
@@ -107,7 +100,4 @@ ruta_mask_varios = procesar_varios_rangos()
 
 # Ejecutar Pincel.py pasando las rutas de las máscaras como argumentos
 os.chdir(os.path.dirname(__file__))
-subprocess.run([
-    "python", "Pincel.py",
-    str(ruta_mask_varios), str(respuesta_tamano), str(ruta_combinada), str(ruta_imagen_saturada)
-])
+#subprocess.run(["python", "Pincel.py",])

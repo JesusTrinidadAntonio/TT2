@@ -38,15 +38,9 @@ document.getElementById('dataForm').addEventListener('submit', function(event) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Cargar contenido de otro HTML en la misma página
-            fetch('resultado.html')  // Cargar el archivo HTML
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('content').innerHTML = html;  // Inyectar el HTML en el contenedor con id 'content'
-                })
-                .catch(error => console.log('Error al cargar el HTML:', error));
+            console.log('Formulario enviado con éxito');
         } else {
             alert('Hubo un problema con el formulario');
         }
-    })
+    });
 });
