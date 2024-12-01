@@ -1,8 +1,14 @@
 [
     {
-        "sensor": "5",
-        "altitud": "5",
-        "focal": "5",
-        "imagen_tamano": 600
+        "color": 1,
+        "tamano": "3",
+        "sensor": "6.17",
+        "altitud": "57",
+        "focal": "24",
+        "imagen_tamano": 1280,
+        "ruta": "imagenes\\Cuerpo_Agua.jpg"
+    },
+    {
+        "pixel_tam": 0.001178318931657502
     }
 ]
