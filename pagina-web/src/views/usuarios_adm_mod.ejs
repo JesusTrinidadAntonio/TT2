@@ -1,0 +1,33 @@
+<%- include('partials/_header') %>
+
+<div class="container ">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/update/<%= data.id_usuario %>" method="post">
+                        <div class="form-group">
+                            <input type="text" name="nombres_usuario" value="<%= data.nombres_usuario %>" class="form-control">     
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="apellidos_usuario" value="<%= data.apellidos_usuario %>" class="form-control">     
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="correo_usuario" value="<%= data.correo_usuario %>" class="form-control">     
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="contraseña_usuario" value="<%= data.contraseña_usuario %>" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="tipo_usuario" value="<%= data.tipo_usuario %>" class="form-control">     
+                        </div>
+                        <button type="submit" class="btn btn-outline-success"> GUARDAR</button>
+                        <a href="/" class="btn btn-outline-danger"> CANCELAR</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

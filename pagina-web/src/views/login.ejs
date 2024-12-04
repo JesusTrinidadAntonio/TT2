@@ -1,0 +1,76 @@
+<%- include('partials/_headlogin') %>
+
+	<div class="section">
+		<div class="container">
+			<div class="row full-height justify-content-center">
+				<div class="col-12 text-center align-self-center py-5">
+					<div class="section pb-5 pt-5 pt-sm-2 text-center">
+					<h6 class="mb-0 pb-3">
+                            <span>INICIAR SESIÓN </span>
+                            <span>REGISTRARSE</span>
+                        </h6>
+					<input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+					<label for="reg-log"></label>
+						<div class="card-3d-wrap mx-auto" style="margin-top: 20px;">
+							<div class="card-3d-wrapper">
+
+                                <div class="card-front">
+									<div class="center-wrap">
+										<div class="section text-center">
+											<h4 class="mb-4 pb-3">INICIAR SESIÓN</h4>
+											<form action="/crear_usuario" method="post">
+												<div class="form-group">
+													<input type="text" name="correo_usuario" class="form-style" placeholder="Ingresa tu correo" autocomplete="off" required>
+													<i class="input-icon uil uil-at"></i>
+												</div>
+												<div class="form-group mt-2">
+													<input type="password" name="contraseña_usuario" class="form-style" placeholder="Ingresa tu contraseña" autocomplete="off" required>
+													<i class="input-icon uil uil-lock-alt"></i>
+												</div>
+												<button type="submit" class="btn mt-4">INICIAR SESIÓN</button>
+												<% if (error) { %>
+													<p class="error_visible" style="color: red;"><%= error %></p>
+												<% } %>
+											</form>
+											
+								</div>
+							</div>
+
+
+								<div class="card-back">
+									<div class="center-wrap">
+										<div class="section text-center">
+											<h4 class="mb-4 pb-3">REGISTRARSE</h4>
+                                            <form action="/user_reg" method="post">
+											<div class="form-group">
+												<input type="text" name="nombres_usuario" class="form-style" placeholder="Nombre(s) " id="nombres_usuario" autocomplete="off" required>
+												
+											</div>
+											<div class="form-group mt-2">
+												<input type="text" name="apellidos_usuario" class="form-style" placeholder="Apellido (S)" id="apellidos_usuario" autocomplete="off" required>
+											</div>
+                                            <div class="form-group mt-2">
+                                                <input type="text" name="correo_usuario" class="form-style" placeholder="Correo" id="correo_usuario" autocomplete="off" required>
+                                            </div>
+											<div class="form-group mt-2">
+												<input type="password" name="contraseña_usuario" class="form-style" placeholder="Contraseña" id="contraseña_usuario" autocomplete="off" required>
+												
+											</div>
+											<button type="submit" class="btn mt-4">REGISTRARSE</button>
+											<p class="error_escondido">Error al registrarse</p>
+                                            </form>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	</div>
+	</div>
+
+</body>
