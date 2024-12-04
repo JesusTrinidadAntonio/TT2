@@ -1,4 +1,3 @@
-# seleccion_color.py
 import cv2
 import numpy as np
 import os
@@ -9,7 +8,7 @@ imagen = cv2.imread(ruta_imagen)
 if imagen is None:
     print(f"No se pudo cargar la imagen en la ruta: {ruta_imagen}")
     exit(1)
-imagen = cv2.resize(imagen, (800, 800))  # Redimensionar la imagen principal
+#imagen = cv2.resize(imagen, (800, 800))  # Redimensionar la imagen principal
 
 hsv_min = None
 hsv_max = None
@@ -73,7 +72,7 @@ def detectar_figura(event, x, y, flags, param):
         contours, _ = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         # Crear una imagen en blanco para dibujar los contornos regularizados
-        combinada = np.zeros_like(gray)
+        combinada = np.zeros_like(imagen)
 
         # Dibujar los contornos y aproximarlos
         for contour in contours:
@@ -94,7 +93,7 @@ def detectar_figura(event, x, y, flags, param):
                         x, y, w, h = x, y, size, size
 
                     # Dibujar el rectángulo o cuadrado en la imagen combinada
-                    cv2.rectangle(combinada, (x, y), (x + w, y + h), 255, thickness=cv2.FILLED)
+                    cv2.rectangle(combinada, (x, y), (x + w, y + h), (255,255,255), thickness=cv2.FILLED)
 
         # Guardar la imagen combinada
         ruta_base = os.path.dirname(os.path.abspath(__file__))

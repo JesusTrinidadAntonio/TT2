@@ -1,8 +1,6 @@
 import cv2
 import numpy as np
 import sys
-import os
-import subprocess
 import json
 
 # Abrir el archivo y cargar el contenido JSON
@@ -13,6 +11,7 @@ if config_list:
     # Obtener la primera configuración desde el archivo JSON
     config = config_list[0]
     respuesta_tamano = float(config["tamano"])
+    #respuesta_tamano_lado = float(config["tamano_lado"])
 
 ruta_imagen = 'Imagenes/figura_combinada.jpg'
 
@@ -45,24 +44,35 @@ if white_pixels_count == 0:
 pixel_size = respuesta_tamano / white_pixels_count
 
 
-    # Datos a guardar (puedes incluir el tamaño de la imagen si lo deseas)
+contornos, _ = cv2.findContours(imagen_binarizada, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+contorno_cuadrado = contornos[0]
+
+p1, p2 = contorno_cuadrado[0][0], contorno_cuadrado[1][0]
+lado_cuadrado_pixeles = int(np.linalg.norm(p1 - p2))
+
+# Calcular el tamaño del píxel con el lado del cuadrado
+if lado_cuadrado_pixeles == 0:
+    print("El lado del cuadrado tiene 0 píxeles. No se puede calcular el tamaño del píxel.")
+    sys.exit(1)
+
+# Calcular el tamaño de cada píxel con el lado del cuadrado
+pixel_size_cuadrado = respuesta_tamano / lado_cuadrado_pixeles
+
 pixel = {
-        'pixel_tam': pixel_size,
-    }
+    'pixel_tam': pixel_size,
+    'pixel_tam_cuadrado': pixel_size_cuadrado
+}
 
 try:
-        with open('datos.json', 'r') as file:
-            data = json.load(file)  # Cargar los datos existentes
+    with open('datos.json', 'r') as file:
+        data = json.load(file)  # Cargar los datos existentes
 except (FileNotFoundError, json.JSONDecodeError):
-        data = []  # Si no existe o si hay un error al leer, usamos una lista vacía
+    data = []  # Si no existe o si hay un error al leer, usamos una lista vacía
 
-    # Agregar los nuevos datos
+# Agregar los nuevos datos
 data.append(pixel)
 
-    # Guardar los datos actualizados en el archivo JSON
+# Guardar los datos actualizados en el archivo JSON
 with open('datos.json', 'w') as file:
-        json.dump(data, file, indent=4)
-
-# Cambiar al directorio del archivo actual y ejecutar el siguiente script
-os.chdir(os.path.dirname(__file__))
-#subprocess.run(["python", "Area y GSD.py", str(pixel_size), str(ruta_imagen)])
+    json.dump(data, file, indent=4)

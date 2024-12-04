@@ -13,9 +13,6 @@ def submit_form():
     try:
         respuestas_colores = int(request.form['colores'])  # Cantidad de rangos de colores
         respuestas_tamano = request.form['tamano']         # Tamaño del objeto
-        sensor = request.form['sensor']                     # Sensor
-        altitud = request.form['altitud']                   # Altitud
-        focal = request.form['focal']                       # Focal
         imagen = request.files['imagen']                    # La imagen recibida como archivo
     except Exception as e:
         return jsonify({'error': f'Ocurrió un error al procesar los datos del formulario: {e}'}), 400
@@ -33,28 +30,22 @@ def submit_form():
         return jsonify({'error': 'No se pudo cargar la imagen.'}), 400
 
     # Obtener el tamaño de la imagen con OpenCV (usamos ancho y alto directamente)
-    ancho, alto = imagen_cargada.shape[1], imagen_cargada.shape[0]
-
-    # Mostrar el tamaño de la imagen
-    print(f"Tamaño de la imagen: {ancho} x {alto} píxeles")
+    ancho = imagen_cargada.shape[1]
 
     # Datos a guardar (puedes incluir el tamaño de la imagen si lo deseas)
     new_data = {
         'color': respuestas_colores,
         'tamano': respuestas_tamano,
-        'sensor': sensor,
-        'altitud': altitud,
-        'focal': focal,
-        'imagen_tamano': ancho,  # Solo el ancho de la imagen
+        'imagen_tamano': ancho,  
         'ruta': ruta_imagen
     }
 
     # Intentar leer el archivo JSON y cargar los datos existentes
     try:
         with open('datos.json', 'r') as file:
-            data = []  # Cargar los datos existentes
+            data = [] 
     except (FileNotFoundError, json.JSONDecodeError):
-        data = []  # Si no existe o si hay un error al leer, usamos una lista vacía
+        data = []  
 
     # Agregar los nuevos datos
     data.append(new_data)

@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import json
 import os
-import subprocess
+
 
 # Abrir el archivo y cargar el contenido JSON
 with open('datos.json', 'r') as file:
