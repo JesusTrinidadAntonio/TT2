@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 import os
-import subprocess
 
 ruta_mask_varios = 'colores/mascara_varios_rangos.npy'
 ruta_imagen_aplanada = 'Imagenes/ImagenAplanada.jpg'
@@ -44,15 +43,14 @@ button_reset = (10, 20, 140, 60)
 button_save = (10, 80, 140, 120)
 button_close = (10, 140, 140, 180)
 button_erase = (10, 200, 140, 240)
-button_manual = (10, 260, 140, 300)
-button_borrar_malla = (10, 320, 140, 360)  # Nuevo botón para "Borrar Malla"
+
 
 # Variable global para almacenar la última posición del mouse
 last_point = None
 
 # Función para manejar los eventos del pincel
 def paint(event, x, y, flags, param):
-    global painting, erasing, overlay, mask_varios, last_point, brush_size, borrar_malla
+    global painting, erasing, overlay, mask_varios, last_point, brush_size
 
     # Solo permitir pintar en el área de la imagen (excluir el panel de botones)
     if x < img.shape[1]:
@@ -65,14 +63,10 @@ def paint(event, x, y, flags, param):
             last_point = None
 
         elif event == cv2.EVENT_MOUSEMOVE and painting:
-            if borrar_malla:
-                # Mostrar borrado visualmente (en overlay con verde)
-                cv2.line(overlay, last_point, (x, y), (0, 255, 0), brush_size * 2)  # Verde en overlay
-                # Borrar secciones de la máscara original (mask_varios)
-                cv2.line(mask_varios, last_point, (x, y), 0, brush_size * 2)  # Multiplicar por 0 (borrar)
-            elif erasing:
+
+            if erasing:
                 # Borrar en el overlay y la máscara
-                cv2.line(overlay, last_point, (x, y), (0, 0, 0), brush_size * 2)
+                cv2.line(overlay, last_point, (x, y), (0, 0, 255), brush_size * 2)
                 cv2.line(mask_varios, last_point, (x, y), 0, brush_size * 2)  # Borrar en la máscara
             else:
                 # Pintar en el overlay y actualizar la máscara
@@ -104,14 +98,6 @@ def paint(event, x, y, flags, param):
         elif button_erase[0] <= x_button <= button_erase[2] and button_erase[1] <= y <= button_erase[3]:
             erasing = not erasing
             print("Borrado activado." if erasing else "Borrado desactivado.")
-        elif button_manual[0] <= x_button <= button_manual[2] and button_manual[1] <= y <= button_manual[3]:
-            print("Ejecutando detección manual.")
-            subprocess.run(["python", "pincel5.py"])
-            cv2.destroyAllWindows()
-            exit()
-        elif button_borrar_malla[0] <= x_button <= button_borrar_malla[2] and button_borrar_malla[1] <= y <= button_borrar_malla[3]:
-            borrar_malla = not borrar_malla
-            print("Borrar Malla activado." if borrar_malla else "Borrar Malla desactivado.")
 
     # Detectar el desplazamiento de la rueda del ratón para cambiar el tamaño del pincel
     elif event == cv2.EVENT_MOUSEWHEEL:
@@ -132,10 +118,7 @@ def draw_buttons(panel):
     erase_color = (255, 255, 255) if erasing else (180, 180, 180)
     cv2.rectangle(panel, (button_erase[0], button_erase[1]), (button_erase[2], button_erase[3]), erase_color, -1)
     cv2.putText(panel, "Borrar", (button_erase[0] + 20, button_erase[1] + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
-    cv2.rectangle(panel, (button_manual[0], button_manual[1]), (button_manual[2], button_manual[3]), (180, 180, 180), -1)
-    cv2.putText(panel, "Manual", (button_manual[0] + 20, button_manual[1] + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
-    cv2.rectangle(panel, (button_borrar_malla[0], button_borrar_malla[1]), (button_borrar_malla[2], button_borrar_malla[3]), (180, 180, 180), -1)
-    cv2.putText(panel, "Borrar Malla", (button_borrar_malla[0] + 10, button_borrar_malla[1] + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
+
 
 # Configurar el callback del mouse
 cv2.namedWindow("Paint Tool")

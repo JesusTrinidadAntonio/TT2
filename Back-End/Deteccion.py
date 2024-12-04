@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import sys
 import os
-import subprocess
 
 ruta_imagen_saturada = 'Imagenes/ImagenAplanada.jpg'
 

@@ -14,31 +14,30 @@ if config_list:
     config1 = config_list[1]
 
     # Valores extraídos del JSON
-    sensor_width_mm = float(config["sensor"])
-    altitude_m = float(config["altitud"])
-    focal_distance_mm = float(config["focal"])
     image_width_px = int(config["imagen_tamano"])
     imagen_path = config["ruta"]
     pixel_size = float(config1["pixel_tam"])
+    pixel_large = float(config1["pixel_tam_cuadrado"])
 
-    # Calcular el GSD
-    GSD = (sensor_width_mm * altitude_m) / (image_width_px * focal_distance_mm)
 else:
     print("El archivo JSON está vacío o mal formado.")
 
 # Leer la imagen
-imagen = cv2.imread(imagen_path)
+
 binary_image = cv2.imread('Imagenes/binarizada.jpg', cv2.IMREAD_GRAYSCALE)
+imagen = cv2.imread('Imagenes/binarizada.jpg')
 
-contours, _ = cv2.findContours(binary_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+_, imagen_binaria = cv2.threshold(binary_image, 127, 255, cv2.THRESH_BINARY)
 
-# Crear una imagen para dibujar el contorno
-contour_image = np.zeros_like(binary_image)
-cv2.drawContours(contour_image, contours, -1, (255), 1)
+# Detectar los contornos en la imagen binarizada
+contornos, _ = cv2.findContours(imagen_binaria, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-# Calcular el perímetro
-perimeter = sum(cv2.arcLength(contour, closed=True) for contour in contours)
-perimeter_m = perimeter * GSD
+# Calcular el perímetro total de los contornos
+perimetro_total = 0
+for contorno in contornos:
+    perimetro_total += cv2.arcLength(contorno, True)
+
+perimeter_m = perimetro_total * pixel_large
 
 # Contar los píxeles blancos y calcular el área total
 white_pixels_count = np.sum(binary_image == 255)
@@ -103,7 +102,7 @@ def handle_button_click(x, y):
             print("Registrar resultado")
             store_results()
             show_alert_message(panel, "Resultado registrado.", (0, 255, 0))  # Mostrar mensaje verde
-            cv2.destroyAllWindows()  # Cerrar la ventana después del mensaje
+            cv2.destroyAllWindows()     # Cerrar la ventana después del mensaje
         elif 200 <= y <= 260:
             print("Descartar resultado")
             # Limpiar las carpetas "Imagenes" y "colores"
