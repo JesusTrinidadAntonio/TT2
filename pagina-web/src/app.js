@@ -35,8 +35,8 @@ app.use(session({
 //Configuracion de mysql
 app.use(myConnection(mysql, {
     host: 'localhost',
-    user: 'sergio',
-    password: 'password',
+    user: 'root',
+    password: 'trinity2112+',
     port:3306,
     database: 'db_b049'
 },'single'));
