@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import sys
 import json
+import math
 
 # Abrir el archivo y cargar el contenido JSON
 with open('datos.json', 'r') as file:
@@ -57,7 +58,7 @@ if lado_cuadrado_pixeles == 0:
     sys.exit(1)
 
 # Calcular el tamaño de cada píxel con el lado del cuadrado
-pixel_size_cuadrado = respuesta_tamano / lado_cuadrado_pixeles
+pixel_size_cuadrado = math.sqrt(respuesta_tamano) / lado_cuadrado_pixeles
 
 pixel = {
     'pixel_tam': pixel_size,

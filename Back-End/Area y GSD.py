@@ -4,6 +4,7 @@ import json
 import os
 import sqlite3
 import shutil
+from datetime import datetime 
 
 # Cargar datos del archivo JSON
 with open('datos.json', 'r') as file:
@@ -63,21 +64,20 @@ def draw_buttons(panel, perimeter_m, total_area_m2):
     cv2.putText(panel, "Descartar Resultado", (15, 230), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 1)
 
 # Función para almacenar el resultado en la base de datos y limpiar las carpetas
-def store_results():
-    # Guardar los resultados en la base de datos SQLite
-    conn = sqlite3.connect('resultados.db')
+def store_results(perimeter_m, total_area_m2, fecha):
+    # Conectar a la base de datos db_b049
+    conn = sqlite3.connect('db_b049.db')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
     cursor = conn.cursor()
 
-    # Insertar los resultados
+    # Insertar los resultados en la tabla cuerpo_a
     cursor.execute(''' 
-        INSERT INTO resultados (perimeter, area)
-        VALUES (?, ?)
-    ''', (perimeter_m, total_area_m2))
+        INSERT INTO cuerpo_agua (nombre_cuerpo_a, fecha_cuerpo_a, area_cuerpo_a, perimetro_cuerpo_a, publicado_cuerpo_a, pendpub_cuerpo_a, id_dir_fk, id_imagen_fk, id_usuario_fk)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (fecha, total_area_m2, perimeter_m,))
 
     # Guardar los cambios y cerrar la conexión
     conn.commit()
     conn.close()
-
     # Limpiar las carpetas "Imagenes" y "colores"
     shutil.rmtree('Imagenes')
     shutil.rmtree('colores')
@@ -100,7 +100,8 @@ def handle_button_click(x, y):
     if 10 <= x <= 240:
         if 120 <= y <= 180:
             print("Registrar resultado")
-            store_results()
+            fecha=datetime.now().strftime('%Y-%m-%d')
+            store_results(perimeter_m,total_area_m2, fecha)
             show_alert_message(panel, "Resultado registrado.", (0, 255, 0))  # Mostrar mensaje verde
             cv2.destroyAllWindows()     # Cerrar la ventana después del mensaje
         elif 200 <= y <= 260:
