@@ -1,0 +1,221 @@
+<%- include('partials/_dashboard') %>
+
+    <style>
+     body{
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+    .user_img{
+        width: 300px;
+        margin-left: 0px;
+        color: transparent;
+        margin-top: 2rem;
+        
+    }
+    .contenedor{
+        background-color: white;
+        
+        border-radius: var(--border-radius-3);
+        width: 1050px;
+        
+        margin-left: 5rem;
+        height: 400px;
+        margin-top: 50px;
+
+    }
+    table{
+        font-size: 18px;
+        font-family: 'Segoe UI';
+        margin-top: 55px;
+    }
+    .tabla-derecha{
+        text-align:right;
+        font-weight: bold;
+        width: 200px;
+        border-color: black;
+        padding-right: 8px;
+        
+    }
+    td{
+        padding-bottom: 10px;
+    }
+    .contenedor h1{
+        position: absolute;
+        height: 30px;
+        width: 100%;
+        text-align: center;
+        right: -5px;
+    }
+
+
+        .regresar {
+            margin-left: 20px;
+
+            height: 30px;
+            color: black;
+            font-family: 'Segoe UI';
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+
+        .datos_m {
+            display: grid;
+            /* Espaciado entre columnas */
+            margin-top: 20px;
+            padding: 10px;
+        }
+
+        .izquierda-columna {
+
+            width: 450px;
+        }
+
+        .derecha-columna {
+            margin-top: -285px;
+            margin-left: 500px;
+            width: 450px;
+        }
+
+        label {
+            font-family: Cambria;
+            font-weight: bold;
+            font-size: 15px;
+            color: #1D3461;
+        }
+
+        .datos_m input {
+            border-radius: var(--border-radius-1);
+            font-size: 15px;
+            height: 30px;
+            width: 100%;
+            /* Se adapta a la columna */
+            padding: 10px;
+            text-align: left;
+            text-decoration: none;
+            margin-top: 5px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .botones {
+
+            /* Los botones ocupan ambas columnas */
+            display: flex;
+            margin-top: 20px;
+
+        }
+
+        .save {
+            background-color: #A6C48A;
+            padding: 10px 20px;
+            border-radius: var(--border-radius-3);
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            color: #272932;
+            text-decoration: none;
+        }
+
+        .save:hover {
+            background-color: #86b856;
+            cursor: pointer;
+            color: white;
+        }
+
+        .cancelar {
+            text-decoration: none;
+            background-color: #EF233C;
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius-3);
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .cancelar:hover {
+            background-color: #bb012c;
+        }
+
+        .volver {
+            text-decoration: none;
+            background-color: #694D75;
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius-3);
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .volver:hover {
+            background-color: #925FA8;
+        }
+
+
+    td{
+        padding-bottom: 10px;
+    }
+
+
+        .botones {
+            margin-top: 10px;
+            
+        }
+        .datos_m h2{
+            font-size: 20px;
+        }
+    </style>
+
+<div class="contenedor">
+    
+    <h1 class="titulo-pestaña">DATOS DEL CUERPO DE AGUA</h1>
+<div style="display: flex; align-items: center; justify-content: center; margin: 20px;" >
+    <!-- Imagen del cuerpo de agua-->
+    <div style="flex: 1; text-align: center;">
+        <img src="img/ajolote.jpg" alt="Imagen de Usuario" style="border-radius: 10px;" class="user_img">
+    </div>
+
+    <!-- Tabla de datos del usuario -->
+    <div style="flex: 2; margin-left: 20px;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <!--Cuerpo de Agua-->
+            <tr>
+                <td class="tabla-derecha">Nombre:  </td>
+                <td  name="nombre_cuerpo_a"> <%= cuerpoAgua.nombre_cuerpo_a %></td>
+            </tr>
+            <tr>
+                <td class="tabla-derecha">Fecha de la imagen:  </td>
+                <td  name="fecha_cuerpo_a"> <%= new Date(cuerpoAgua.fecha_cuerpo_a).toLocaleDateString('es-ES') %></td>
+            </tr>
+            <tr>
+                <td class="tabla-derecha">Área(m)<sup>2</sup>:  </td>
+                <td  name="area_cuerpo_a"> <%= cuerpoAgua.area_cuerpo_a%> m<sup>2</sup></td>
+            </tr>
+            <tr>
+                <td class="tabla-derecha">Perímetro(m): </td>
+                <td  name="perimetro_cuerpo_a"> <%= cuerpoAgua.perimetro_cuerpo_a %> m</td>
+            </tr>
+            <!--Dirección-->
+            <tr>
+                <td class="tabla-derecha">País: </td>
+                <td  name="pais_dir"> <%= direccion.pais_dir %></td>
+            </tr>
+            <tr>
+                <td class="tabla-derecha">Entidad Federativa: </td>
+                <td  name="estado_dir"> <%= direccion.estado_dir %></td>
+            </tr>
+            <tr>
+                <td class="tabla-derecha">Ciudad/Alcaldía/Municipio: </td>
+                <td  name="ciudad_dir"> <%= direccion.ciudad_dir %></td>
+            </tr>
+            
+        </table>
+
+        <div class="botones">
+            <a href="/mod_reg/<%= cuerpoAgua.id_cuerpo_a %>" class="save">MODIFICAR</a>
+            <a href="/dashboard" class="volver">CANCELAR</a>
+            <a href="/del_reg/<%= cuerpoAgua.id_cuerpo_a %>" class="cancelar">ELIMINAR</a>
+        </div>
+    </div>
+</div>
