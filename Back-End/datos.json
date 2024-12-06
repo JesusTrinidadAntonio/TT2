@@ -1,12 +1,12 @@
 [
     {
-        "color": 5,
+        "color": 3,
         "tamano": "9",
         "imagen_tamano": 1280,
         "ruta": "imagenes\\Cuerpo_Agua.jpg"
     },
     {
-        "pixel_tam": 0.00011987852309659545,
-        "pixel_tam_cuadrado": 0.01098901098901099
+        "pixel_tam": 0.00011814744801512288,
+        "pixel_tam_cuadrado": 0.01090909090909091
     }
 ]

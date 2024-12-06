@@ -66,18 +66,18 @@ def draw_buttons(panel, perimeter_m, total_area_m2):
 # Función para almacenar el resultado en la base de datos y limpiar las carpetas
 def store_results(perimeter_m, total_area_m2, fecha):
     # Conectar a la base de datos db_b049
-    conn = sqlite3.connect('db_b049.db')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-    cursor = conn.cursor()
-
-    # Insertar los resultados en la tabla cuerpo_a
-    cursor.execute(''' 
-        INSERT INTO cuerpo_agua (nombre_cuerpo_a, fecha_cuerpo_a, area_cuerpo_a, perimetro_cuerpo_a, publicado_cuerpo_a, pendpub_cuerpo_a, id_dir_fk, id_imagen_fk, id_usuario_fk)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ''', (fecha, total_area_m2, perimeter_m,))
-
-    # Guardar los cambios y cerrar la conexión
-    conn.commit()
-    conn.close()
+    #conn = sqlite3.connect('db_b049.db')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+    #cursor = conn.cursor()
+#
+    ## Insertar los resultados en la tabla cuerpo_a
+    #cursor.execute(''' 
+    #    INSERT INTO cuerpo_agua (nombre_cuerpo_a, fecha_cuerpo_a, area_cuerpo_a, perimetro_cuerpo_a, publicado_cuerpo_a, pendpub_cuerpo_a, id_dir_fk, id_imagen_fk, id_usuario_fk)
+    #    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    #''', (fecha, total_area_m2, perimeter_m,))
+#
+    ## Guardar los cambios y cerrar la conexión
+    #conn.commit()
+    #conn.close()
     # Limpiar las carpetas "Imagenes" y "colores"
     shutil.rmtree('Imagenes')
     shutil.rmtree('colores')
