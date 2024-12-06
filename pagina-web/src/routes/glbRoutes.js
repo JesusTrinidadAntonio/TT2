@@ -57,6 +57,8 @@ router.get('/resultados',FunctionController.resultados);
 
 router.post('/GuardarCalculo',FunctionController.guardarCalculo);
 
+router.post('/DescartarCalculo',FunctionController.descartarCalculo);
+
 //Funcion read mysql
 router.get('/', FunctionController.home);
 

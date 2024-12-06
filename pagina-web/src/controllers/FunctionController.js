@@ -96,7 +96,7 @@ controller.guardarCalculo = (req, res) => {
                     });
 
                     // Redirigir después de insertar todo
-                    res.redirect('/login');
+                    res.redirect('/dashboard');
                 });
             });
         });
@@ -112,6 +112,10 @@ controller.delete=(req,res)=>{
             
         });
     });
+};
+
+controller.descartarCalculo=(req,res)=>{   
+            res.redirect('/dashboard');
 };
 
 controller.edit=(req,res)=>{
