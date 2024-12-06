@@ -1,11 +1,17 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template,send_from_directory
 from PIL import Image
 import cv2
 import os
 import json
 import subprocess
+from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='/static', static_folder='Imagenes')
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})  # Permitir solicitudes desde localhost:3000
+
+# Carpeta donde se guardan las imágenes
+app.config['IMAGENES_FOLDER'] = 'Imagenes'
+os.makedirs(app.config['IMAGENES_FOLDER'], exist_ok=True)
 
 @app.route('/submit_form', methods=['POST'])
 def submit_form():
@@ -76,6 +82,36 @@ def submit_form():
         'message': 'Formulario procesado correctamente',
         'image_path': ruta_imagen  # Ruta donde se guardó la imagen
     })
+
+
+# Ruta para devolver el JSON de resultados junto con las rutas de las imágenes
+@app.route('/resultados', methods=['GET'])
+def get_resultados():
+    try:
+        # Intentar leer el archivo 'resultados.json'
+        with open('resultados.json', 'r') as file:
+            resultados_data = json.load(file)
+        
+        # Aquí, puedes agregar las rutas de las imágenes a cada resultado
+        for resultado in resultados_data:
+            # Asumimos que el resultado ya contiene las claves 'area', 'perimetro' y 'fecha'
+            # Ahora agregamos las rutas de las imágenes
+            resultado['imagen_url_cuerpo_agua'] = '/imagenes/Cuerpo_Agua.jpg'
+            resultado['imagen_url_binarizada'] = '/imagenes/binarizada.jpg'
+        
+        # Devolver los resultados con las rutas de las imágenes
+        return jsonify(resultados_data)
+
+    except (FileNotFoundError, json.JSONDecodeError):
+        # Si no se encuentra el archivo o hay un error con el JSON, devolver un mensaje de error
+        return jsonify({'error': 'No se encontraron resultados.'}), 404
+
+# Ruta para servir las imágenes desde el servidor
+@app.route('/imagenes/<filename>')
+def send_image(filename):
+    # La ruta de la carpeta donde se almacenan las imágenes estáticas
+    imagenes_folder = os.path.join(app.root_path, 'static', 'imagenes')
+    return send_from_directory(imagenes_folder, filename)
 
 if __name__ == '__main__':
     os.makedirs('Imagenes', exist_ok=True)  # Crear el directorio si no existe

@@ -29,6 +29,80 @@ controller.save=(req,res)=>{
     
 };
 
+controller.guardarCalculo = (req, res) => {
+    const data = req.body;
+
+    // Extraemos los datos del formulario
+    const nombreCuerpoAgua = data.nombre_cuerpo_agua;  // Nombre del cuerpo de agua
+    const fecha = data.fecha;  // Fecha del cuerpo de agua (campo deshabilitado)
+    const area = data.area;  // Área del cuerpo de agua
+    const perimetro = data.perimetro;  // Perímetro del cuerpo de agua
+    const fechaFoto = data.fecha_foto;  // Fecha de la foto (fecha ingresada por el usuario)
+
+    // Ruta de las imágenes
+    const imagenCuerpoAguaUrl = data.imagen_url_cuerpo_agua;  // URL de la imagen Cuerpo_Agua
+    const imagenBinarizadaUrl = data.imagen_url_binarizada;  // URL de la imagen binarizada
+
+    // 1. Guardar el cuerpo de agua en la tabla "cuerpo_agua"
+    req.getConnection((err, conn) => {
+        if (err) {
+            console.error("Error en la conexión:", err);
+            return res.status(500).send("Error en la conexión con la base de datos");
+        }
+
+        // Guardar los datos en la tabla cuerpo_agua
+        const cuerpoAguaData = {
+            nombre_cuerpo_a: nombreCuerpoAgua,
+            fecha_cuerpo_a: fecha,
+            area_cuerpo_a: area,
+            perimetro_cuerpo_a: perimetro,
+        };
+
+        conn.query('INSERT INTO cuerpo_agua SET ?', [cuerpoAguaData], (err, result) => {
+            if (err) {
+                console.error("Error al insertar en cuerpo_agua:", err);
+                return res.status(500).send("Error al insertar los datos en la tabla cuerpo_agua");
+            }
+
+            // 2. Guardar la imagen Cuerpo_Agua en la tabla "imagen"
+            const imagenData = {
+                url_imagen: imagenCuerpoAguaUrl,
+                fecha_imagen: fechaFoto,  // Usamos la fecha ingresada por el usuario
+            };
+
+            conn.query('INSERT INTO imagen SET ?', [imagenData], (err, result) => {
+                if (err) {
+                    console.error("Error al insertar en imagen:", err);
+                    return res.status(500).send("Error al insertar los datos en la tabla imagen");
+                }
+
+                // 3. Guardar la imagen binarizada en la tabla "imagen_editada"
+                const imagenEditadaData = {
+                    url_imagen: imagenBinarizadaUrl,  // URL de la imagen binarizada
+                };
+
+                conn.query('INSERT INTO imagen_editada SET ?', [imagenEditadaData], (err, result) => {
+                    if (err) {
+                        console.error("Error al insertar en imagen_editada:", err);
+                        return res.status(500).send("Error al insertar los datos en la tabla imagen_editada");
+                    }
+
+                    // Todo ha ido bien, redirigir a la página de login
+                    console.log("Datos insertados correctamente:");
+                    console.log({
+                        cuerpoAguaData,
+                        imagenData,
+                        imagenEditadaData
+                    });
+
+                    // Redirigir después de insertar todo
+                    res.redirect('/login');
+                });
+            });
+        });
+    });
+};
+
 //Eliminar datos en la base de datos
 controller.delete=(req,res)=>{   
     const { id_usuario }=req.params;
@@ -64,6 +138,14 @@ controller.update=(req,res)=>{
 
 controller.home=(req,res)=>{
     res.render('home');
+};
+
+controller.instrucciones=(req,res)=>{
+    res.render('instrucciones');
+};
+
+controller.resultados=(req,res)=>{
+    res.render('Resultados');
 };
 
 controller.dashboard = (req, res) => {

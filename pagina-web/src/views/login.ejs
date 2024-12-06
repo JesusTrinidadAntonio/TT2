@@ -1,20 +1,28 @@
 <%- include('partials/_headlogin') %>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario con Tarjeta</title>
+    <link rel="stylesheet" href="estilos.css"> <!-- Incluye tus estilos aquí -->
+</head>
+<body>
 	<div class="section">
 		<div class="container">
 			<div class="row full-height justify-content-center">
 				<div class="col-12 text-center align-self-center py-5">
 					<div class="section pb-5 pt-5 pt-sm-2 text-center">
-					<h6 class="mb-0 pb-3">
-                            <span>INICIAR SESIÓN </span>
-                            <span>REGISTRARSE</span>
-                        </h6>
-					<input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
-					<label for="reg-log"></label>
+						<h6 class="mb-0 pb-3">
+							<span>INICIAR SESIÓN </span>
+							<span>REGISTRARSE</span>
+						</h6>
+						<input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+						<label for="reg-log"></label>
 						<div class="card-3d-wrap mx-auto" style="margin-top: 20px;">
 							<div class="card-3d-wrapper">
-
-                                <div class="card-front">
+								<div class="card-front">
 									<div class="center-wrap">
 										<div class="section text-center">
 											<h4 class="mb-4 pb-3">INICIAR SESIÓN</h4>
@@ -32,45 +40,84 @@
 													<p class="error_visible" style="color: red;"><%= error %></p>
 												<% } %>
 											</form>
-											
+										</div>
+									</div>
 								</div>
-							</div>
-
-
 								<div class="card-back">
 									<div class="center-wrap">
 										<div class="section text-center">
 											<h4 class="mb-4 pb-3">REGISTRARSE</h4>
-                                            <form action="/user_reg" method="post">
-											<div class="form-group">
-												<input type="text" name="nombres_usuario" class="form-style" placeholder="Nombre(s) " id="nombres_usuario" autocomplete="off" required>
+											<form action="/user_reg" method="post">
 												
-											</div>
-											<div class="form-group mt-2">
-												<input type="text" name="apellidos_usuario" class="form-style" placeholder="Apellido (S)" id="apellidos_usuario" autocomplete="off" required>
-											</div>
-                                            <div class="form-group mt-2">
-                                                <input type="text" name="correo_usuario" class="form-style" placeholder="Correo" id="correo_usuario" autocomplete="off" required>
-                                            </div>
-											<div class="form-group mt-2">
-												<input type="password" name="contraseña_usuario" class="form-style" placeholder="Contraseña" id="contraseña_usuario" autocomplete="off" required>
+												<div class="form-group">
+													<input type="text" name="nombres_usuario" class="form-style" placeholder="Nombre(s)" id="nombres_usuario" autocomplete="off" required>
+												</div>
 												
-											</div>
-											<button type="submit" class="btn mt-4">REGISTRARSE</button>
-											<p class="error_escondido">Error al registrarse</p>
-                                            </form>
+												<div class="form-group mt-2">
+													<input type="text" name="apellidos_usuario" class="form-style" placeholder="Apellido(s)" id="apellidos_usuario" autocomplete="off" required>
+												</div>
+												
+
+												<div class="form-group mt-2">
+													<input type="text" name="institucion_usuario" class="form-style" placeholder="Institución perteneciente" id="institucion_usuario" autocomplete="off" required>
+												</div>
+
+												<div class="form-group mt-2">
+													<input type="text" name="telefono_usuario" class="form-style" placeholder="Telefono" id="telefono_usuario" autocomplete="off" required>
+												</div>
+												
+												<div class="form-group mt-2">
+													<input type="text" name="ocupacion_usuario" class="form-style" placeholder="Ocupación" id="ocupacion_usuario" autocomplete="off" required>
+												</div>
+												
+												<div class="form-group mt-2">
+													<input type="text" name="pais_usuario" class="form-style" placeholder="País de residencia" id="pais_usuario" autocomplete="off" required>
+												</div>
+												
+												<div class="form-group mt-2">
+													<input type="text" name="estado_usuario" class="form-style" placeholder="Entidad Federativa" id="estado_usuario" autocomplete="off" required>
+												</div>
+												
+												<div class="form-group mt-2">
+													<input type="text" name="ciudad_usuario" class="form-style" placeholder="Ciudad/Municipio/Alcaldía" id="ciudad_usuario" autocomplete="off" required>
+												</div>	
+
+												<div class="form-group mt-2">
+													<input type="text" name="correo_usuario" class="form-style" placeholder="Correo electrónico" id="correo_usuario" autocomplete="off" required>
+												</div>
+
+												<div class="form-group mt-2">
+													<input type="password" name="contraseña_usuario" class="form-style" placeholder="Contraseña" id="contraseña_usuario" autocomplete="off" required>
+												</div>
+
+												<button type="submit" class="btn mt-4">REGISTRARSE</button>
+												<p class="error_escondido">Error al registrarse</p>
+											</form>
+										</div>
 									</div>
 								</div>
-
 							</div>
-
 						</div>
 					</div>
 				</div>
 			</div>
-		</form>
-	</div>
-	</div>
+		</div>
 	</div>
 
+	<script>
+		// Seleccionamos el checkbox y los inputs de la tarjeta trasera
+		const checkbox = document.getElementById('reg-log');
+		const inputs = document.querySelectorAll('.card-back input');
+
+		// Detectamos cuando cambia el estado del checkbox
+		checkbox.addEventListener('change', () => {
+			if (checkbox.checked) {
+				// Si se muestra el lado de registro, limpiamos los inputs
+				inputs.forEach(input => {
+					input.value = '';
+				});
+			}
+		});
+	</script>
 </body>
+</html>

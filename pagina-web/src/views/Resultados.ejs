@@ -1,0 +1,170 @@
+<%- include('partials/_dashboard') %>   
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados</title>
+    <style>
+
+        /* Contenedor específico para el formulario */
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            margin-top: 30px;
+            margin-left: 60vh;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h4 {
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* Estilo de los párrafos dentro del formulario */
+        form p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        /* Estilo para las imágenes */
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        /* Estilo para los campos deshabilitados */
+        input, textarea, select {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        input[disabled], textarea[disabled], select[disabled] {
+            background-color: #e6e6e6;
+        }
+
+        /* Estilo de los botones */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Responsividad para pantallas pequeñas */
+        @media (max-width: 500px) {
+            .form-container {
+                width: 90%;
+                padding: 15px;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            img {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenedor principal con el formulario -->
+    <div class="form-container">
+        <h2>Resultados de Procesamiento</h2>
+
+        <!-- Formulario contenido en el contenedor -->
+        <form>
+            <!-- Campo editable para el nombre del cuerpo de agua -->
+            <p>
+                <label for="nombre_cuerpo_agua">Nombre del Cuerpo de Agua:</label>
+                <input type="text" id="nombre_cuerpo_agua" name="nombre_cuerpo_agua" required />
+            </p>
+
+            <p>
+                <label for="fecha en que se tomo la foto">Fecha de la fotografía:</label>
+                <input type="text" id="fecha foto" name="fecha de foto" required />
+            </p>
+
+            <!-- Campos deshabilitados para mostrar los datos -->
+            <p>
+                <label for="area">Área:</label>
+                <input type="text" id="area" name="area" disabled />
+            </p>
+            <p>
+                <label for="perimetro">Perímetro:</label>
+                <input type="text" id="perimetro" name="perimetro" disabled />
+            </p>
+            <p>
+                <label for="fecha">Fecha de procesamiento:</label>
+                <input type="text" id="fecha" name="fecha" disabled />
+            </p>
+
+            <!-- Mostrar las imágenes -->
+            <h4>Cuerpo Agua:</h4>
+            <img id="imagen_cuerpo_agua" src="" alt="Imagen del Cuerpo Agua" />
+
+            <h4>Imagen Segmentada:</h4>
+            <img id="imagen_binarizada" src="" alt="Imagen Segmentada" /><br><br>
+            <button href="/GuardarCalculo" type="submit">Guardar</button>
+            <button href="/DescartarCalculo"type="submit">descartar</button>
+        </form>
+    </div>
+
+    <script>
+        fetch('http://127.0.0.1:5000/resultados', {
+            method: 'GET'
+        })
+        .then(response => response.json()) // Parsear la respuesta como JSON
+        .then(data => {
+            if (data && data.length > 0) {
+                const resultado = data[0]; // Acceder al primer (y único) objeto del array
+
+                // Mostrar los datos en los campos correspondientes
+                document.getElementById('area').value = resultado.area;
+                document.getElementById('perimetro').value = resultado.perimetro;
+                document.getElementById('fecha').value = resultado.fecha;
+
+                // Actualizar las imágenes
+                document.getElementById('imagen_cuerpo_agua').src = resultado.imagen_url_cuerpo_agua;
+                document.getElementById('imagen_binarizada').src = resultado.imagen_url_binarizada;
+            } else {
+                console.log('No se encontraron resultados.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al obtener los resultados:', error);
+        });
+    </script>
+
+</body>
+</html>

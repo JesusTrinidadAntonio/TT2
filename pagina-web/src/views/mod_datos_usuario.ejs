@@ -1,20 +1,194 @@
 <%- include('partials/_dashboard') %>
 
-    <div class="datos_usuario">
-        <form action="/cambio_datos %>" method="post">
-            <div class="form-group">
-                <input type="text" name="nombres_usuario" value="<%= data.nombres_usuario %>" class="form-control">
+<style>
+body {
+    overflow-x: hidden;
+    bottom: 30px;
+}
+
+.user_img {
+    width: 300px;
+    margin-left: 0px;
+    color: transparent;
+    margin-top: 2rem;
+}
+
+.contenedor {
+    background-color: aliceblue;
+    border-radius: var(--border-radius-3);
+    width: 1050px;
+    margin-left: 5rem;
+    height: auto;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.contenedor h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #054A91;
+}
+
+
+.regresar {
+    margin-left: 20px;
+    
+    height: 30px;
+    color: black;
+    font-family: 'Segoe UI';
+    font-weight: bold;
+    font-size: 15px;
+}
+
+
+.datos_m {
+    display: grid;
+    /* Espaciado entre columnas */
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.izquierda-columna{
+    
+    width: 450px;
+}
+.derecha-columna{
+    margin-top: -285px;
+    margin-left: 500px;
+    width: 450px;
+}
+
+label {
+    font-family: Cambria;
+    font-weight: bold;
+    font-size: 15px;
+    color: #1D3461;
+}
+
+.datos_m input {
+    border-radius: var(--border-radius-1);
+    font-size: 15px;
+    height: 30px;
+    width: 100%; /* Se adapta a la columna */
+    padding: 10px;
+    text-align: left;
+    text-decoration: none;
+    margin-top: 5px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.botones {
+    grid-column: span 2; /* Los botones ocupan ambas columnas */
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.save {
+    background-color: #A6C48A;
+    padding: 10px 20px;
+    border-radius: var(--border-radius-3);
+    border: none;
+    font-size: 15px;
+    font-weight: bold;
+    color: #272932;
+}
+
+.save:hover {
+    background-color: #86b856;
+    cursor: pointer;
+    color: white;
+}
+
+.cancelar {
+    text-decoration: none;
+    background-color: #EF233C;
+    color: white;
+    padding: 10px 20px;
+    border-radius: var(--border-radius-3);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.cancelar:hover {
+    background-color: #bb012c;
+}
+
+
+
+    .botones {
+        margin-left: 330px;
+        width: 30%;
+    }
+
+</style>
+
+<div class="contenedor">
+   
+    <!-- Botón regresar -->
+    <div class="regresar">
+        <h1>MODIFICAR DATOS/CAMBIAR CONTRASEÑA</h1>
+       
+    </div>
+
+    <div class="datos_m">
+        <form action="/cambio_datos" method="post" class="form-grid">
+            <!-- Columna izquierda (5 campos) -->
+            <div class="izquierda-columna">
+                <div class="form-group">
+                    <label for="nombres_usuario">Nombre(s):</label>
+                    <input type="text" name="nombres_usuario" value="<%= data.nombres_usuario %>" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="apellidos_usuario">Apellido(s):</label>
+                    <input type="text" name="apellidos_usuario" value="<%= data.apellidos_usuario %>" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="correo_usuario">Correo electrónico:</label>
+                    <input type="email" name="correo_usuario" value="<%= data.correo_usuario %>" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="contraseña_usuario">Contraseña:</label>
+                    <input type="password" name="contraseña_usuario" value="<%= data.contraseña_usuario %>" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="institucion">Institución:</label>
+                    <input type="text" name="institucion_usuario" value="<%= data.institucion_usuario %>" class="form-control">
+                </div>
             </div>
-            <div class="form-group">
-                <input type="text" name="apellidos_usuario" value="<%= data.apellidos_usuario %>" class="form-control">
+
+            <!-- Columna derecha (5 campos) -->
+            <div class="derecha-columna">
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="text" name="telefono_usuario" value="<%= data.telefono_usuario %>" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="ocupacion">Ocupación:</label>
+                    <input type="text" name="ocupacion_usuario" value="<%= data.ocupacion_usuario %>" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="pais_residencia">País de residencia:</label>
+                    <input type="text" name="pais_usuario" value="<%= data.pais_usuario %>" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="estado">Estado/Entidad Federativa:</label>
+                    <input type="text" name="estado_usuario" value="<%= data.estado_usuario %>" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="ciudad">Ciudad/Municipio/Alcaldía:</label>
+                    <input type="text" name="ciudad_usuario" value="<%= data.ciudad_usuario %>" class="form-control">
+                </div>
             </div>
-            <div class="form-group">
-                <input type="email" name="correo_usuario" value="<%= data.correo_usuario %>" class="form-control">
+
+            <!-- Botones -->
+            <div class="botones">
+                <button type="submit" class="save">GUARDAR</button>
+                <a href="/datos_personales" class="cancelar">CANCELAR</a>
             </div>
-            <div class="form-group">
-                <input type="password" name="contraseña_usuario" value="<%= data.contraseña_usuario %>" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-outline-success"> GUARDAR</button>
-            <a href="/datos_personales" class="btn btn-outline-danger"> CANCELAR</a>
         </form>
     </div>
+</div>

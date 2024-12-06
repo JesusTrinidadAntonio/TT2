@@ -1,14 +1,118 @@
 <%- include('partials/_dashboard') %>
+<style>
+    body{
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+    .user_img{
+        width: 300px;
+        margin-left: 0px;
+        color: transparent;
+        margin-top: 2rem;
+        
+    }
+    .contenedor{
+        background-color: white;
+        
+        border-radius: var(--border-radius-3);
+        width: 1050px;
+        
+        margin-left: 5rem;
+        height: 400px;
+        margin-top: 50px;
 
-<div class="datos_usuario" >
-    <img src="img/ajolote.jpg" alt="">
-    <H1>DATOS DE USUARIO</H1>
-    <h2>Nombre(s): </h2><h3 name="nombres_usuario"> <%= data.nombres_usuario %> </h3>
-    <H2>Apellido(s):</H2><h3 name="apellidos_usuario"> <%= data.apellidos_usuario %> </h3>
-    <H2>Correo electrónico:</H2><h3 name="correo_usuario"> <%= data.correo_usuario %> </h3>
-    <div style="text-align: center;">
-    <a class="modificar" style="margin-top: 30px; position:absolute;"  href="/modificar_datos">MODIFICAR</a>
+    }
+    table{
+        font-size: 18px;
+        font-family: 'Segoe UI';
+        margin-top: 55px;
+    }
+    .tabla-derecha{
+        text-align:right;
+        font-weight: bold;
+        width: 200px;
+        border-color: black;
+        padding-right: 8px;
+        
+    }
+    td{
+        padding-bottom: 10px;
+    }
+    .contenedor h1{
+        position: absolute;
+        height: 30px;
+        width: 100%;
+        text-align: center;
+        right: -5px;
+    }
+    .boton{
+        margin-top: 10px;
+        margin-left: 30px;
+    }
+    .boton a{
+        text-decoration: none;
+        color: black;
+        font-size: 15px;
+        font-family: 'Segoe UI';
+        font-weight: bold;
+        background-color: #9EBC9F;
+        border-radius: var(--border-radius-2);
+    }
+    .boton a:hover{
+        background-color: #709572;
+    }
+</style>
+<div class="contenedor">
+    
+    <h1 class="titulo-pestaña">DATOS DE USUARIO</h1>
+<div style="display: flex; align-items: center; justify-content: center; margin: 20px;" >
+    <!-- Imagen -->
+    <div style="flex: 1; text-align: center;">
+        <img src="img/ajolote.jpg" alt="Imagen de Usuario" style="border-radius: 10px;" class="user_img">
+    </div>
+
+    <!-- Tabla de datos del usuario -->
+    <div style="flex: 2; margin-left: 20px;">
+
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td class="tabla-derecha">Nombre(s):  </td>
+                <td  name="nombres_usuario"> <%= data.nombres_usuario %></td>
+            </tr>
+            <tr>
+                <td class="tabla-derecha">Apellido(s):  </td>
+                <td  name="apellidos_usuario"> <%= data.apellidos_usuario %></td>
+            </tr>
+            <tr>
+                <td  class="tabla-derecha">Correo electrónico:  </td>
+                <td  name="correo_usuario"> <%= data.correo_usuario %></td>
+            </tr>
+            <tr>
+                <td  class="tabla-derecha">Institución:  </td>
+                <td  name="institucion_usuario"> <%= data.institucion_usuario %></td>
+            </tr>
+            <tr>
+                <td  class="tabla-derecha">Número telefónico:  </td>
+                <td  name="telefono_usuario"> <%= data.telefono_usuario %></td>
+            </tr>
+            <tr>
+                <td  class="tabla-derecha">Ocupación:  </td>
+                <td  name="ocupacion_usuario"> <%= data.ocupacion_usuario %></td>
+            </tr>
+            <tr>
+                <td  class="tabla-derecha"> Residencia:  </td>
+                <td  name="correo_usuario"> <%= data.pais_usuario %> , <%= data.estado_usuario %> , <%= data.ciudad_usuario %></td>
+            </tr>
+
+        </table>
+
+        <!-- Botón de modificar centrado debajo -->
+        <div class="boton">
+            <a class="modificar" href="/modificar_datos" 
+               style="display: inline-block; padding: 10px 20px;">
+                MODIFICAR /CAMBIAR CONTRASEÑA
+            </a>
+        </div>
     </div>
 </div>
-</body>
-</html>
+</div>

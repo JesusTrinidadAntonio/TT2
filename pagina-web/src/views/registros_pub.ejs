@@ -1,0 +1,40 @@
+<%- include('partials/_dashboard') %>
+
+<!-- Contenido de las pestañas -->
+<main>
+    <div class="pestaña">
+        <h1>CUERPOS DE AGUA REGISTRADOS</h1>
+    </div>
+
+    <!-- Inicio de tabla de los cuerpos de agua -->
+    <!-- Historial de registros -->
+
+    <div class="cuerpos_agua">
+        <% if (data && data.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>NOMBRE DEL CUERPO</th>
+                        <th>ÁREA (m<sup>2</sup>)</th>
+                        <th>PERÍMETRO (m)</th>
+                        <th>FECHA DE REGISTRO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i = 0; i < data.length; i++) { %>
+                        <tr>
+                            <td><%= data[i].nombre_cuerpo_a %></td>
+                            <td><%= data[i].area_cuerpo_a %> m<sup>2</sup></td>
+                            <td><%= data[i].perimetro_cuerpo_a %> m</td>
+                            <td>
+                                <%= new Date(data[i].fecha_cuerpo_a).toLocaleDateString('es-ES') %>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <h1>No existen registros</h1>
+        <% } %>
+    </div>
+</main>

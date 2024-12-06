@@ -51,6 +51,12 @@ router.get('/sugerencias', FunctionController.sug);
 //Redireccionamos a registros
 router.get('/registros',FunctionController.reg);
 
+router.get('/instrucciones',FunctionController.instrucciones);
+
+router.get('/resultados',FunctionController.resultados);
+
+router.post('/GuardarCalculo',FunctionController.guardarCalculo);
+
 //Funcion read mysql
 router.get('/', FunctionController.home);
 

@@ -1,14 +1,171 @@
 <%- include('partials/_dashboard') %>
 
-    <div class="datos_usuario">
-        <form action="/cambio_datos_ca/<%= data.id_cuerpo_a %>" method="post">
-            <div class="form-group">
-                <input type="text" name="nombre_cuerpo_a" value="<%= data.nombre_cuerpo_a %>" class="form-control">
-            </div>
-            <div class="form-group">
-                <input type="date" name="fecha_cuerpo_a" value="<%= data.fecha_cuerpo_a %>" class="form-control">
+    <style>
+        body {
+            overflow-x: hidden;
+            bottom: 30px;
+        }
 
-            <button type="submit" class="btn btn-outline-success"> GUARDAR</button>
-            <a href="/ver_registro/<%= data.id_cuerpo_a %>" class="btn btn-outline-danger"> CANCELAR</a>
-        </form>
+        .user_img {
+            width: 300px;
+            margin-left: 0px;
+            color: transparent;
+            margin-top: 2rem;
+        }
+
+        .contenedor {
+            background-color: aliceblue;
+            border-radius: var(--border-radius-3);
+            width: 880px;
+            margin-left: 13%;
+            height: auto;
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        .contenedor h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #054A91;
+        }
+
+
+        .regresar {
+            margin-left: 20px;
+
+            height: 30px;
+            color: black;
+            font-family: 'Segoe UI';
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+
+        .datos_m {
+            display: grid;
+            /* Espaciado entre columnas */
+            margin-top: 20px;
+            padding: 10px;
+        }
+
+        .izquierda-columna {
+
+            width: 450px;
+        }
+
+        .derecha-columna {
+            margin-top: -285px;
+            margin-left: 500px;
+            width: 450px;
+        }
+
+        label {
+            font-family: Cambria;
+            font-weight: bold;
+            font-size: 15px;
+            color: #1D3461;
+        }
+
+        .datos_m input {
+            border-radius: var(--border-radius-1);
+            font-size: 15px;
+            height: 30px;
+            width: 100%;
+            /* Se adapta a la columna */
+            padding: 10px;
+            text-align: left;
+            text-decoration: none;
+            margin-top: 5px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .botones {
+            grid-column: span 2;
+            /* Los botones ocupan ambas columnas */
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .save {
+            background-color: #A6C48A;
+            padding: 10px 20px;
+            border-radius: var(--border-radius-3);
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            color: #272932;
+        }
+
+        .save:hover {
+            background-color: #86b856;
+            cursor: pointer;
+            color: white;
+        }
+
+        .cancelar {
+            text-decoration: none;
+            background-color: #EF233C;
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius-3);
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .cancelar:hover {
+            background-color: #bb012c;
+            cursor: pointer;
+        }
+
+
+
+        .botones {
+            margin-left: 330px;
+            width: 30%;
+        }
+    </style>
+
+
+    <div class="contenedor">
+        <h1>MODIFICAR DATOS (CUERPO DE AGUA)</h1>
+        <div class="datos_m">
+            <form action="/cambio_datos_ca/<%= cuerpoAgua.id_cuerpo_a %>" method="post">
+                <div class="form-group">
+                    <label for="nombre_cuerpo_a">Nombre del Cuerpo de Agua:</label>
+                    <input type="text" name="nombre_cuerpo_a" value="<%= cuerpoAgua.nombre_cuerpo_a %>"
+                        class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha_cuerpo_a">Fecha de Captura (Imagen):</label>
+                    <input type="date" name="fecha_cuerpo_a" value="<%= new Date(cuerpoAgua.fecha_cuerpo_a).toISOString().split('T')[0] %>"
+                        class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="pais_dir">País del Cuerpo de Agua:</label>
+                    <input type="text" name="pais_dir" value="<%= direccion.pais_dir %>" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="estado_dir">Entidad Federativa del Cuerpo de Agua:</label>
+                    <input type="text" name="estado_dir" value="<%= direccion.estado_dir %>" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="ciudad_dir">Ciudad/Alcaldía/Municipio del Cuerpo de Agua:</label>
+                    <input type="text" name="ciudad_dir" value="<%= direccion.ciudad_dir %>" class="form-control">
+                </div>
+
+                <div class="botones">
+                <button type="submit" class="save">GUARDAR</button>
+                <a href="/ver_registro/<%= cuerpoAgua.id_cuerpo_a %>" class="cancelar">CANCELAR</a>
+            </div>
+            </form>
+
+        </div>
     </div>
