@@ -1,0 +1,119 @@
+<%- include('partials/_admDashboard') %>
+<style>
+    body{
+        overflow: hidden;
+    }
+    .contenedor{
+        width: 90%;
+        margin-right: 50px;
+        height: 400px;
+        background-color: #6F7D8C;
+        margin-left: 60px;
+        margin-top: 50px;
+        border-radius: var(--border-radius-3);
+    }
+
+    table {
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+
+        }
+
+        th {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            padding: 5px;
+            font-size: 25px;
+            border-right: 2px solid whitesmoke;
+            border-bottom: 2px solid whitesmoke;
+            color: white;
+        }
+
+        td {
+            border-right: 2px solid whitesmoke;
+            border-bottom: 2px solid whitesmoke;
+            font-size: 18px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            padding: 5px;
+            color: #CEFDFF;
+        }
+        .rechazar{
+            background-color: #FF220C;
+            text-decoration: none;
+            padding-top: 7px;
+            text-align: center;
+            color: whitesmoke;
+            border: 1px solid black;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 50%;
+        }
+        .rechazar:hover{
+            background-color: #D33E43;
+        }
+        .aceptar{
+            background-color:#6D9F71;
+            text-decoration: none;
+            padding-top: 7px;
+            text-align: center;
+            color: whitesmoke;
+            border: 1px solid black;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 50%;
+        }
+        .aceptar:hover{
+            background-color: #337357;
+        }
+
+</style>
+
+<div class="contenedor">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Imagen </th>
+                <th scope="col">Nombre (cuerpo de agua) </th>
+                <th scope="col">Área</th>
+                <th>Perímetro </th>
+                <th>Dirección</th>
+                <th>Nombre (Usuario)</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (registrosCombinados && registrosCombinados.length) { %>
+                <% registrosCombinados.forEach((registro) => { %>
+                    <tr>
+                        <td><%= registro.imagen?.id_imagen || 'Sin imagen' %></td>
+                        <td><%= registro.cuerpoAgua.nombre_cuerpo_a %></td>
+                        <td><%= registro.cuerpoAgua.area_cuerpo_a %></td>
+                        <td><%= registro.cuerpoAgua.perimetro_cuerpo_a %></td>
+                        <td>
+                            <%= registro.direccion?.pais_dir || 'Desconocido' %>, 
+                            <%= registro.direccion?.estado_dir || '' %>, 
+                            <%= registro.direccion?.ciudad_dir || '' %>
+                        </td>
+                        <td>
+                            <%= registro.usuario?.nombres_usuario || 'Anónimo' %> 
+                            <%= registro.usuario?.apellidos_usuario || '' %>
+                        </td>
+                        <td>
+                            <a href="/aceptar_pub/<%= registro.cuerpoAgua.id_cuerpo_a %>" class="aceptar">
+                                <span class="material-symbols-rounded">check</span>
+                            </a>
+                            <a href="/rechazar_pub/<%= registro.cuerpoAgua.id_cuerpo_a %>" class="rechazar">
+                                <span class="material-symbols-rounded">close</span>
+                            </a>
+                        </td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="7">No hay registros pendientes.</td>
+                </tr>
+            <% } %>
+            
+        </tbody>
+    </table>
+</div>

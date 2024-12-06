@@ -1,51 +1,57 @@
 <%- include('partials/_dashboard') %>
 
     <style>
-     body{
-        overflow-x: hidden;
-        overflow-y: hidden;
-    }
-    .user_img{
-        width: 300px;
-        margin-left: 0px;
-        color: transparent;
-        margin-top: 2rem;
-        
-    }
-    .contenedor{
-        background-color: white;
-        
-        border-radius: var(--border-radius-3);
-        width: 1050px;
-        
-        margin-left: 5rem;
-        height: 400px;
-        margin-top: 50px;
+        body {
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
 
-    }
-    table{
-        font-size: 18px;
-        font-family: 'Segoe UI';
-        margin-top: 55px;
-    }
-    .tabla-derecha{
-        text-align:right;
-        font-weight: bold;
-        width: 200px;
-        border-color: black;
-        padding-right: 8px;
-        
-    }
-    td{
-        padding-bottom: 10px;
-    }
-    .contenedor h1{
-        position: absolute;
-        height: 30px;
-        width: 100%;
-        text-align: center;
-        right: -5px;
-    }
+        .user_img {
+            width: 300px;
+            margin-left: 0px;
+            color: transparent;
+            margin-top: 2rem;
+
+        }
+
+        .contenedor {
+            background-color: white;
+
+            border-radius: var(--border-radius-3);
+            width: 1050px;
+
+            margin-left: 5rem;
+            height: 400px;
+            margin-top: 50px;
+
+        }
+
+        table {
+            font-size: 18px;
+            font-family: 'Segoe UI';
+            margin-top: 55px;
+        }
+
+        .tabla-derecha {
+            text-align: right;
+            font-weight: bold;
+            width: 200px;
+            border-color: black;
+            padding-right: 8px;
+
+        }
+
+        td {
+            padding-bottom: 10px;
+        }
+
+        .contenedor h1 {
+            position: absolute;
+            height: 30px;
+            width: 100%;
+            text-align: center;
+            right: -5px;
+        }
 
 
         .regresar {
@@ -152,70 +158,100 @@
             background-color: #925FA8;
         }
 
+        .publicar {
+            background-color: #FA824C;
+            padding: 10px 20px;
+            border-radius: var(--border-radius-3);
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            color: #272932;
+            text-decoration: none;
+        }
 
-    td{
-        padding-bottom: 10px;
-    }
+        .publicar:hover {
+            background-color: #CA5310;
+        }
 
+        td {
+            padding-bottom: 10px;
+        }
 
         .botones {
             margin-top: 10px;
-            
+
         }
-        .datos_m h2{
+
+        .datos_m h2 {
             font-size: 20px;
         }
     </style>
 
-<div class="contenedor">
-    
-    <h1 class="titulo-pestaña">DATOS DEL CUERPO DE AGUA</h1>
-<div style="display: flex; align-items: center; justify-content: center; margin: 20px;" >
-    <!-- Imagen del cuerpo de agua-->
-    <div style="flex: 1; text-align: center;">
-        <img src="img/ajolote.jpg" alt="Imagen de Usuario" style="border-radius: 10px;" class="user_img">
-    </div>
+    <div class="contenedor">
 
-    <!-- Tabla de datos del usuario -->
-    <div style="flex: 2; margin-left: 20px;">
-        <table style="width: 100%; border-collapse: collapse;">
-            <!--Cuerpo de Agua-->
-            <tr>
-                <td class="tabla-derecha">Nombre:  </td>
-                <td  name="nombre_cuerpo_a"> <%= cuerpoAgua.nombre_cuerpo_a %></td>
-            </tr>
-            <tr>
-                <td class="tabla-derecha">Fecha de la imagen:  </td>
-                <td  name="fecha_cuerpo_a"> <%= new Date(cuerpoAgua.fecha_cuerpo_a).toLocaleDateString('es-ES') %></td>
-            </tr>
-            <tr>
-                <td class="tabla-derecha">Área(m)<sup>2</sup>:  </td>
-                <td  name="area_cuerpo_a"> <%= cuerpoAgua.area_cuerpo_a%> m<sup>2</sup></td>
-            </tr>
-            <tr>
-                <td class="tabla-derecha">Perímetro(m): </td>
-                <td  name="perimetro_cuerpo_a"> <%= cuerpoAgua.perimetro_cuerpo_a %> m</td>
-            </tr>
-            <!--Dirección-->
-            <tr>
-                <td class="tabla-derecha">País: </td>
-                <td  name="pais_dir"> <%= direccion.pais_dir %></td>
-            </tr>
-            <tr>
-                <td class="tabla-derecha">Entidad Federativa: </td>
-                <td  name="estado_dir"> <%= direccion.estado_dir %></td>
-            </tr>
-            <tr>
-                <td class="tabla-derecha">Ciudad/Alcaldía/Municipio: </td>
-                <td  name="ciudad_dir"> <%= direccion.ciudad_dir %></td>
-            </tr>
-            
-        </table>
+        <h1 class="titulo-pestaña">DATOS DEL CUERPO DE AGUA</h1>
+        <div style="display: flex; align-items: center; justify-content: center; margin: 20px;">
+            <!-- Imagen del cuerpo de agua-->
+            <div style="flex: 1; text-align: center;">
+                <img src="img/ajolote.jpg" alt="Imagen de Usuario" style="border-radius: 10px;" class="user_img">
+            </div>
 
-        <div class="botones">
-            <a href="/mod_reg/<%= cuerpoAgua.id_cuerpo_a %>" class="save">MODIFICAR</a>
-            <a href="/dashboard" class="volver">CANCELAR</a>
-            <a href="/del_reg/<%= cuerpoAgua.id_cuerpo_a %>" class="cancelar">ELIMINAR</a>
+            <!-- Tabla de datos del usuario -->
+            <div style="flex: 2; margin-left: 20px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <!--Cuerpo de Agua-->
+                    <tr>
+                        <td class="tabla-derecha">Nombre: </td>
+                        <td name="nombre_cuerpo_a">
+                            <%= cuerpoAgua.nombre_cuerpo_a %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tabla-derecha">Fecha de la imagen: </td>
+                        <td name="fecha_cuerpo_a">
+                            <%= new Date(cuerpoAgua.fecha_cuerpo_a).toLocaleDateString('es-ES') %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tabla-derecha">Área(m)<sup>2</sup>: </td>
+                        <td name="area_cuerpo_a">
+                            <%= cuerpoAgua.area_cuerpo_a%> m<sup>2</sup>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tabla-derecha">Perímetro(m): </td>
+                        <td name="perimetro_cuerpo_a">
+                            <%= cuerpoAgua.perimetro_cuerpo_a %> m
+                        </td>
+                    </tr>
+                    <!--Dirección-->
+                    <tr>
+                        <td class="tabla-derecha">País: </td>
+                        <td name="pais_dir">
+                            <%= direccion.pais_dir %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tabla-derecha">Entidad Federativa: </td>
+                        <td name="estado_dir">
+                            <%= direccion.estado_dir %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tabla-derecha">Ciudad/Alcaldía/Municipio: </td>
+                        <td name="ciudad_dir">
+                            <%= direccion.ciudad_dir %>
+                        </td>
+                    </tr>
+
+                </table>
+
+                <div class="botones">
+                    <a href="/mod_reg/<%= cuerpoAgua.id_cuerpo_a %>" class="save">MODIFICAR</a>
+                    <a href="/pub_reg/<%= cuerpoAgua.id_cuerpo_a %>" class="publicar">PUBLICAR</a>
+                    <a href="/dashboard" class="volver">CANCELAR</a>
+                    <a href="/del_reg/<%= cuerpoAgua.id_cuerpo_a %>" class="cancelar">ELIMINAR</a>
+
+                </div>
+            </div>
         </div>
-    </div>
-</div>

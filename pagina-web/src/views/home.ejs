@@ -1,22 +1,140 @@
-<%- include('partials/_header') %>
-<div>
-    <img src="img/LogoNormal.png" alt="Sistemas Inteligentes para el medio Ambiente" 
-    style="position: absolute; margin-top: 8%; margin-left: -3%; height: 300px;">
-    <div style="text-align: right;">
-        <h1 style="color: #000;font-family: Cambria; font-size: 40px;text-align: center;  font-weight: bold;"
-        >TT-2 2024-B049</h1>
-        <H2 style="color: #000;font-family: Cambria; font-size: 25px;text-align: center;  font-weight:bold; font-style: italic;"
-        >SISTEMA DE MORFOMETRIA AUTOMATIZADO PARA LA EVALUACIÓN DE CUERPOS DE AGUA CONTINENTALES</H2>
-        <h2 style="color: #800000;font-family: Cambria; font-size: 25px;text-align: center;  font-weight: bold;"
-        >INSTITUTO POLITÉCNICO NACIONAL</h2>
-        <H2 style="color: navy;font-family: Cambria; font-size: 25px;text-align: center;  font-weight: bold;"
-        >ESCUELA SUPERIOR DE CÓMPUTO</H2>
-        <div style="color: #000; font-size: 22px; font-family: Cambria; font-style: italic; text-align: center; font-weight: bold;">
-            <p>Presentan:</p>
-            <p>Baiz Cajero Sergio Alan</p>
-            <p>Trinidad Antonio Jesús</p>
-            <p>Delgado Moreno Marc Anthony</p>
-        </div>  
-    </div>
+<%- include('partials/_dashboard') %>
 
-</div>
+    <style>
+        body {}
+
+        .contenedor {
+            width: 90%;
+            margin-left: 60px;
+            margin-top: 50px;
+            border-radius: var(--border-radius-3);
+            margin-bottom: 80px;
+
+            background-color: aliceblue;
+            padding: 50px;
+
+        }
+
+        .texto h1 {
+            font-size: 40px;
+            text-align: center;
+            color: #AA7DCE;
+            margin-bottom: 10px;
+        }
+
+        .texto p {
+            font-size: 20px;
+            color: black;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-weight: lighter;
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+
+        li {
+            font-weight: bold;
+            font-size: 20px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            margin-top: 30px;
+            margin-left: 30px;
+
+        }
+
+        .imagen {
+            text-align: center;
+
+        }
+
+        .imagen img {
+            border-radius: var(--border-radius-2);
+            border: 2px solid black;
+            width: 500px;
+        }
+
+        .texto h4 {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 20px;
+            font-weight: normal;
+            text-align: center;
+        }
+
+        .texto h2 {
+            margin-top: 20px;
+            margin-left: 20px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        .texto a {
+            background-color: #AA7DCE;
+            color: white;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-decoration: none;
+            border-radius: var(--border-radius-3);
+            border: black solid 2px;
+            text-align: center;
+        }
+
+        .boton {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+    </style>
+
+    <div class="contenedor">
+        <div class="texto">
+            <h1>¡BIENVENIDO A SIMA-SM!</h1>
+            <p>SIMA-SM es un Sistema de Morfometría creado por alumnos del Instituto Politécnico Nacional, con la
+                finalidad de ayudar
+                a caracterizar un cuerpo de agua a las personas que se encuentren interesadas en la limnología. Este
+                sistema se encuentra actualmente
+                en desarrollo, por lo que las medidas morfométricas con las que cuenta son el área y el perímetro. En un
+                futuro, esperamos con nuevas actualizaciones,
+                poder expandir el repertorio de medidas morfométricas con las que cuenta el sistema.
+            </p>
+            <p>
+                SIMA-SM es sencillo de utilizar, lo único que necesitas es lo siguiente:
+            </p>
+            <ol type="1">
+                <li>UN DRON</li>
+                <p>El dron deberá contar con una cámara fotográfica que sea capaz de tomar una foto de la totalidad del
+                    cuerpo de agua que se desea
+                    caracterizar y un objeto de referencia que será colocado a un costado de este.
+                </p>
+                <li>Objeto de referencia:</li>
+                <p>
+                    SIMA-SM se refiere como objeto de referencia a una lona de escala conocida, que pueda ser
+                    identificada en la imagen, es decir, que
+                    sea de un tamaño que pueda verse en perspectiva al cuerpo de agua y que se distinga del entorno y
+                    del cuerpo de agua.
+                </p>
+                <p>Este objeto de referencia deberá ser colocado a un lado del cuerpo de agua.</p>
+            </ol>
+            <p>A continuación se muestra un ejemplo de una imagen para ingresar a SIMA-SM:</p>
+            <div class="imagen">
+                <img src="img/JagueyAxalpa.jpeg" alt="">
+            </div>
+            <h4>Jagüey Axalpa - Técamac, Edo. Mex. México</h4>
+
+            <h2>¿Sabías que?... </h2>
+            <p>El jagüey Axalpa es un cuerpo de agua de suma importancia, debido a que es el hogar del Ajolote Atigrado.
+                Sin embargo, el poco cuidado con el que cuenta el cuerpo de agua ha degradado las condiciones para que
+                pueda subsistir nuestro amigo
+                el Ajolote Atigrado :(. SIMA busca la creación de Sistemas Inteligentes para el Medio Ambiente, con el
+                objetivo de ayudar a preservar la gran
+                biodiversidad con la que cuenta nuestro país, México.
+            </p>
+            <p>Y no descansaremos hasta lograrlo, todos juntos por un México con más Ajolotes :) </p>
+            <h2 style="text-align: center;">¿Deseas saber más sobre nosotros?</h2>
+            <div class="boton">
+                <a href="/quienes_somos">¡CONÓCENOS!</a>
+            </div>
+        </div>
+
+    </div>
+    </div>
