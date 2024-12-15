@@ -1,0 +1,12 @@
+[
+    {
+        "color": 2,
+        "tamano": "9",
+        "imagen_tamano": 960,
+        "ruta": "imagenes\\Cuerpo_Agua.jpg"
+    },
+    {
+        "pixel_tam": 0.0044444444444444444,
+        "pixel_tam_cuadrado": 0.06818181818181818
+    }
+]

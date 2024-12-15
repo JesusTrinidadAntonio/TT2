@@ -1,0 +1,239 @@
+<%- include('partials/_dashboard') %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicion</title>
+</head>
+<style>
+  
+
+.contenedor {
+  width: 70vw;               /* 70% del ancho de la pantalla */
+  height: 20vh;              /* 25% de la altura de la pantalla */
+  border: 2px solid #ffffff;    /* Borde de 2px de color negro */
+  padding: 10px 20px 20px 20px; /* Relleno interno, con menos espacio en la parte superior */
+  position: absolute;        /* Posicionamiento absoluto */
+  top: 10.5 vh;                 /* 2% de la altura de la pantalla desde el borde superior */
+  left: 2vw;                /* 2% del ancho de la pantalla desde el borde izquierdo */
+  box-sizing: border-box;    /* Asegura que el borde y el padding no se sumen al tamaño del contenedor */
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.contenedor h1 {
+  margin-top: 0; /* Asegura que el título esté cerca del borde superior */
+}
+
+.contenido {
+  font-size: 20px;
+  color: #333;
+}
+
+/* Estilo para el contenedor principal .flujo */
+.flujo {
+  width: 20vw;               /* Ancho del contenedor */
+  height: 88vh;              /* Alto del contenedor */
+  border: 2px solid #ffffff;    /* Borde negro */
+  padding: 10px;             /* Espaciado interno */
+  position: absolute;        /* Posición absoluta */
+  top: 12 vh;                  /* Distancia desde la parte superior */
+  left: 75vw;                /* Distancia desde la izquierda */
+  box-sizing: border-box;    /* Incluye el padding en el tamaño total */
+  text-align: center;        /* Centra el texto */
+  font-family: Arial, sans-serif; /* Fuente para todo el contenedor */
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.dinamico {
+  width: 70vw;               /* Ancho del contenedor */
+  height: 66vh;              /* Alto del contenedor */
+  border: 2px solid #ffffff;    /* Borde negro */
+  padding: 10px 20px;        /* Menos espacio en la parte superior, más cerca del borde */
+  position: absolute;        /* Posición absoluta */
+  top: 33vh;                  /* Distancia desde la parte superior */
+  left: 2vw;                /* Distancia desde la izquierda */
+  box-sizing: border-box;    /* Incluye el padding en el tamaño total */
+  text-align: center;        /* Centra el texto */
+  font-family: Arial, sans-serif; /* Fuente para todo el contenedor */
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.dinamico h1 {
+  margin-top: 0; 
+}
+
+.dinamico .contenido {
+  font-size: 22px;  
+  color: #333;
+}
+
+
+.bloques {
+  display: flex;             
+  flex-direction: column;    
+  justify-content: center;   
+  align-items: center;       
+  margin-top: 20px;          
+}
+
+
+.bloque {
+  width: 150px;              
+  padding: 20px;             
+  margin: 5px 0;            
+  background-color: #34d2e0; 
+  color: white;              
+  border-radius: 10px;       
+  text-align: center;        
+}
+
+
+.flecha {
+  font-size: 20px;
+  color: #920cff;
+  animation: bounce 0.5s infinite alternate; 
+}
+
+@keyframes bounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(10px); }
+}
+
+.bloque h2 {
+  margin-bottom: 8px;     
+  font-size: 15px;           
+}
+
+.bloque p {
+  font-size: 8px;           
+  margin-top: 5px;           
+  color: #ddd;               
+}
+
+
+</style>
+<body>
+
+    <div class="contenedor">
+        <h1>Instrucciones para medir un cuerpo de agua</h1>
+    <ol>
+        <li>Introducir datos en el formulario</li>
+        <li>Conocer cuantos tonos tiene del cuerpo de agua</li>
+        <li>Deberás contar con las especificaiones de la camara de tu dron (Distancia focal y tamaño de sensor)</li>
+        <li>Deberás conocer la altura a la que fue tomada la fotografía</li>
+        <li>Sigue el flujo de trabajo mostrado del lado derecho</li>
+    </ol>
+    </div>
+
+    <div class="flujo">
+        <h1>Flujo</h1>
+        <div class="bloques">
+            <div class="bloque" id="datos">
+                <h2>Obtencion de datos</h2>
+                <p>Completa el formulario</p>
+            </div>
+            <div class="flecha">▼</div>
+            <div class="bloque" id="delimitacion">
+                <h2>Delimitacion</h2>
+                <p>Selecciona los tonos del cuerpo de agua</p>
+            </div>
+            <div class="flecha">▼</div>
+            <div class="bloque" id="referencia">
+                <h2>Referencia</h2>
+                <p>Selecciona el color de tu objeto de referencia</p>
+            </div>
+            <div class="flecha">▼</div>
+            <div class="bloque" id="pincel">
+                <h2>Verificacion</h2>
+                <p>Verifica que se haya cubierto el cuerpo de agua y si no pinta el faltante</p>
+            </div>
+            <div class="flecha">▼</div>
+            <div class="bloque" id="Area">
+                <h2>Area y Perimetro</h2>
+                <p>Obten en area y el perimetro</p>
+            </div>
+            <div class="flecha">▼</div>
+            <div class="bloque" id="registro">
+                <h2>Registro</h2>
+                <p>Indica si deseas almacenar el registro de los datos</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dinamico">
+            <!-- Formulario -->
+    <form id="dataForm">
+        <h1>Completa el siguiente formulario</h1>
+        <!-- Pregunta 1: Cantidad de colores -->
+        <label for="colores">¿Cuántos tonos de color tiene el cuerpo de agua?</label><br>
+        <input type="number" id="colores" name="colores" required><br><br>
+
+        <!-- Pregunta 2: Tamaño del objeto -->
+        <label for="tamano">¿Qué tamaño tiene el objeto de referencia en metros cuadrados?</label><br>
+        <input type="number" id="tamano" name="tamano" required><br><br>
+        <!-- Selector de archivo -->
+        <label for="imagen">Selecciona una imagen:</label><br>
+        <input type="file" id="imagen" name="imagen" accept="image/*" required><br><br>
+
+        <!-- Botón para enviar el formulario -->
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+    document.getElementById('dataForm').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevenir el envío tradicional del formulario
+
+    // Obtener los datos del formulario y convertirlos a números flotantes
+    const colores = document.getElementById('colores').value;
+    const tamano = parseFloat(document.getElementById('tamano').value);  // Convertir a número flotante
+    const imagen = document.getElementById('imagen').files[0];  // Obtener el archivo seleccionado
+
+    // Validación de campos
+    if (!colores || isNaN(tamano) || !tamano || !imagen) {
+        alert("Por favor llena todos los campos correctamente.");
+        return;
+    }
+
+    // Crear un objeto FormData para enviar los datos y la imagen
+    const formData = new FormData();
+    formData.append('colores', colores);
+    formData.append('tamano', tamano);
+    formData.append('imagen', imagen);
+
+    // Enviar los datos al servidor utilizando fetch
+    fetch('http://127.0.0.1:5000/submit_form', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Hubo un problema con la solicitud');
+        }
+        return response.json();  // Parsear la respuesta como JSON
+    })
+    .then(data => {
+        if (data.success) {
+            console.log('Formulario enviado con éxito');
+            alert("Formulario enviado con éxito");
+            // Redirigir a otra página (resultados)
+            window.location.href = "http://localhost:3000/resultados"; 
+        } else {
+            alert('Hubo un problema con el formulario');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al enviar el formulario');
+    });
+});
+
+    </script>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,71 @@
+<%- include('partials/_admDashboard') %>
+<style>
+    body{
+        overflow: hidden;
+    }
+    .contenedor{
+        width: 90%;
+        margin-right: 50px;
+        height: 400px;
+        background-color: #6F7D8C;
+        margin-left: 60px;
+        margin-top: 50px;
+        border-radius: var(--border-radius-3);
+    }
+
+    table {
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+
+        }
+
+        th {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            padding: 5px;
+            font-size: 25px;
+            border-color: black;
+            color: white;
+        }
+         th, td{
+            border-bottom: solid 2px black;
+            border-right: solid 2px black;
+        }
+        td {
+
+            font-size: 18px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            padding: 5px;
+            color: #CEFDFF;
+        }
+</style>
+
+<div class="contenedor">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">ID </th>
+                <th scope="col">Tipo </th>
+                <th scope="col">Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if(data){%>
+                <% for(var i=0; i<data.length; i++) { %>
+                    <tr class="table-secondary">
+                        <td>
+                            <%= data[i].id_sugerencia %>
+                        </td>
+                        <td>
+                            <%= data[i].tipo %>
+                        </td>
+                        <td>
+                            <%= data[i].descripcion %>
+                        </td>
+                      
+                    </tr>
+                    <% } %>
+                        <% } %>
+        </tbody>
+    </table>
+</div>

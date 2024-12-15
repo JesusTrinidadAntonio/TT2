@@ -1,0 +1,222 @@
+<%- include('partials/_dashboard') %>
+    <style>
+        .formulario {
+
+            width: 90%;
+            margin-left: 60px;
+            margin-left: 60px;
+            background-color: aliceblue;
+            border-radius: var(--border-radius-3);
+            margin-top: 20px;
+            margin-bottom: 60px;
+        }
+
+        .formulario h1 {
+            color: black;
+            font-size: 50px;
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            color: #7D82B8;
+
+        }
+        .botones{
+
+            width: 100%;
+            height: 80px;
+            text-align: center;
+            margin-left: 150px;
+            margin-top: -60px;
+
+        }
+        .guardar{
+            font-size: 15px;
+            width: 110px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            color: black;
+            background-color:#8DDCA4;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: var(--border-radius-3);
+            border: 1px solid black;
+            margin-bottom: 30PX;
+        }
+        .guardar:hover{
+            cursor: pointer;
+            background-color: #5dd07e;
+
+        }
+        .descartar{
+            
+            font-size: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            background-color: #8075FF;
+            text-decoration: none;
+            text-align: center;
+            color: white;
+            padding: 10px;
+            border: 1px solid black;
+            border-radius: var(--border-radius-3);
+        }
+        .descartar:hover{
+            color: #6320EE;
+        }
+        .resultados{
+            
+            width: 600px;
+            height: 0px;
+            text-align: right;
+            margin-left: 380px;
+        }
+        .resultados label{
+            font-size: 22px;
+            font-family: Cambria;
+            text-align: left;
+            font-weight: bold;
+            color: #303036;
+        }
+        .resultados input{
+            padding: 3px;
+            font-size: 18px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            width: 250px;
+            margin-bottom: 10px;
+            border-radius: var(--border-radius-1);
+            
+        }
+        .titulo{
+            color: #272D2D;
+            text-align: right;
+            font-size: 30px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+        }
+        .imagen-derecha{
+            width: 400px;
+            height: 450px;
+            margin-left: 70px;
+        }
+        .imagen-derecha img{
+            max-width: 400px;
+            max-height: 180px;
+            border-radius: var(--border-radius-2);
+            border: solid 1px black;
+        }
+        .imagen-derecha h4{
+            font-size: 20px;
+            text-align: left;
+            margin-left: 30px;
+            color:#303036;
+
+        }
+        .lectura{
+            background-color: transparent;
+            border: none;
+            pointer-events: none;
+        }
+    </style>
+
+    <!-- Contenedor principal con el formulario -->
+    <div class="formulario">
+        <h1>RESULTADOS DEL PROCESAMIENTO</h1>
+        <div class="resultados">
+            <!-- Formulario contenido en el contenedor -->
+            <form action="/guardarCalculo" method="POST">
+                <h2 class="titulo">DATOS DEL CUERPO DE AGUA</h2>
+            <p>
+                <label for="nombre_cuerpo_agua">Nombre del Cuerpo de Agua:</label>
+                <input type="text" id="nombre_cuerpo_agua" name="nombre_cuerpo_a" required />
+            </p>
+    
+            <p>
+                <label for="fecha_foto">Fecha de la fotografía:</label>
+                <input type="date" id="fecha_foto" name="fecha_cuerpo_a" required />
+            </p>
+            <p>
+                <label for="pais">País del cuerpo de agua:</label>
+                <input type="text" id="pais" name="pais_dir" required />
+            </p>
+            <p>
+                <label for="estado">Estado del cuerpo de agua:</label>
+                <input type="text" id="estado" name="estado_dir" required />
+            </p>
+            <p>
+                <label for="ciudad">Ciudad del cuerpo de agua:</label>
+                <input type="text" id="ciudad" name="ciudad_dir" required />
+            </p>
+    
+            <!-- Campos deshabilitados para mostrar los datos -->
+            <p>
+                <label for="area">Área:</label>
+                <input type="text" id="area" name="area_cuerpo_a" readonly />
+            </p>
+            <p>
+                <label for="perimetro">Perímetro:</label>
+                <input type="text" id="perimetro" name="perimetro_cuerpo_a" readonly/>
+            </p>
+            <p>
+                <label for="fecha">Fecha de procesamiento:</label>
+                <input type="text" id="fecha" name="fecha_imagen" readonly/>
+            </p>
+        </div>
+        <div class="imagen-derecha">
+            <!-- Mostrar las imágenes directamente desde la carpeta "imagenes" -->
+            <h4>Cuerpo Agua:</h4>
+            <img id="imagen_cuerpo_agua" name="url_imagen" src="" alt="Imagen del Cuerpo Agua" height="200" />
+
+            <h4>Imagen Segmentada:</h4>
+            <img id="imagen_binarizada" name ="url_imagen_ed" src="" alt="Imagen Segmentada" height="200" /><br><br>
+
+                <!-- Campos ocultos para las rutas de las imágenes -->
+            <input type="hidden" id="url_imagen" name="url_imagen" value="" />
+            <input type="hidden" id="url_imagen_ed" name="url_imagen_ed" value="" />
+        </div>
+
+        <div class="botones">
+            <button type="submit" class="guardar">GUARDAR</button>
+            
+            <a type="button" href="/" class="descartar">DESCARTAR</a>
+        </div>
+        </form>
+
+    </div>
+
+
+    <script>
+        // Obtener y mostrar los datos de la API
+        fetch('http://127.0.0.1:5000/resultados', {
+            method: 'GET'
+        })
+        .then(response => response.json()) // Parsear la respuesta como JSON
+        .then(data => {
+            if (data && data.length > 0) {
+                const resultado = data[2]; 
+                const imagen = data[0]; 
+                const editada = data[1]; 
+
+                document.getElementById('area').value = resultado.area;
+                document.getElementById('perimetro').value = resultado.perimetro;
+                document.getElementById('fecha').value = resultado.fecha;
+                
+                // Asignar las imágenes con las rutas dinámicamente
+                document.getElementById('imagen_cuerpo_agua').src = imagen.nombre_cuerpo_a;  // Corregido
+                document.getElementById('imagen_binarizada').src = editada.nombre_img_ed;  // Corregido
+
+                // Rellenar los campos ocultos con las rutas de las imágenes
+                document.getElementById('url_imagen').value = imagen.nombre_cuerpo_a;
+                document.getElementById('url_imagen_ed').value = editada.nombre_img_ed;
+            } else {
+                console.log('No se encontraron resultados.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al obtener los resultados:', error);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+<%- include('partials/_admDashboard') %>
+    <style>
+        body {
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        .contenedor {
+            width: 90%;
+            margin-right: 50px;
+            height: 400px;
+            background-color: #6F7D8C;
+            margin-left: 60px;
+            margin-top: 50px;
+            border-radius: var(--border-radius-3);
+        }
+
+        table {
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+
+        }
+
+        th {
+            border-right: 2px solid whitesmoke;
+            border-bottom: 2px solid whitesmoke;
+    
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            padding: 5px;
+            font-size: 25px;
+
+            color: white;
+        }
+
+        td {
+            border-right: 2px solid whitesmoke;
+            border-bottom: 2px solid whitesmoke;
+            font-size: 18px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            padding: 5px;
+            color: #CEFDFF;
+        }
+
+        .Modificar {
+            background-color: #7EA3CC;
+            color: #FBFCFF;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 5px;
+
+            border-radius: var(--border-radius-3);
+        }
+
+        .Modificar:hover {
+            background-color: #5f7b9c;
+        }
+
+        .Eliminar {
+            background-color: #B3001B;
+            color: #FBFCFF;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 5px;
+            border-radius: var(--border-radius-3);
+        }
+
+        .Eliminar:hover {
+            background-color: #800316;
+        }
+    </style>
+
+
+    <div class="contenedor">
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Nombres </th>
+                    <th scope="col">Apellidos </th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Institución</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if(data){%>
+                    <% for(var i=0; i<data.length; i++) { %>
+                        <tr class="table-secondary">
+                            <td>
+                                <%= data[i].nombres_usuario %>
+                            </td>
+                            <td>
+                                <%= data[i].apellidos_usuario %>
+                            </td>
+                            <td>
+                                <%= data[i].correo_usuario %>
+                            </td>
+                            <td>
+                                <%= data[i].pais_usuario %>, <%= data[i].estado_usuario %>, <%= data[i].ciudad_usuario
+                                            %>
+                            </td>
+                            <td>
+                                <%= data[i].institucion_usuario %>
+                            </td>
+                            <td> <a href="/delete/<%= data[i].id_usuario %>" class="Eliminar">ELIMINAR</a>
+                                <a href="/update/<%= data[i].id_usuario %>" class="Modificar">MODIFICAR</a>
+                            </td>
+                        </tr>
+                        <% } %>
+                            <% } %>
+            </tbody>
+        </table>
+    </div>

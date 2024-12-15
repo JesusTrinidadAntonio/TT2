@@ -1,0 +1,112 @@
+<%- include('partials/_admDashboard') %>
+
+    <style>
+        body {
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        .contenedor {
+            width: 90%;
+            margin-right: 50px;
+            height: 400px;
+            background-color: #6F7D8C;
+            margin-left: 60px;
+            margin-top: 50px;
+            border-radius: var(--border-radius-3);
+        }
+        .formulario{
+                        padding-top: 20px;
+            text-align: center;
+        }
+        .formulario label{
+            padding: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: aliceblue;
+        }
+        .formulario input{
+            padding: 5px;
+            font-size: 15px;
+            font-weight: normal;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            margin-bottom: 5px;
+            border-radius: var(--border-radius-2);
+      
+        }
+        .formulario H1{
+            font-weight: 25PX;
+            margin-bottom: 20px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-weight: bold;
+            color: #CEFDFF;
+        }
+        .save{
+            background-color: #70AE6E;
+            color: white;
+            padding: 10px;
+            font-size: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            border-radius: var(--border-radius-2);
+            border-color:  #70AE6E;
+        }
+        .save:hover{
+            cursor: pointer;
+            background-color: #BEEE62;
+        }
+        .cancel{
+            
+            text-decoration: none;
+            color: white;
+            padding: 10px;
+            font-size: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            border-radius: var(--border-radius-2);
+            background-color: #D33E43;
+        }
+        .cancel:hover{
+            background-color: #FF220C;
+        }
+    </style>
+    <div class="contenedor">
+        <div class="formulario">
+            <h1>MODIFICAR DATOS DEL USUARIO CON ID: <%= data.id_usuario %> </h1>
+            <form action="/update/<%= data.id_usuario %>" method="post">
+                <div class="form-group">
+                    <label for="nombres_usuario">Nombres: </label>
+                    <input type="text" name="nombres_usuario" value="<%= data.nombres_usuario %>" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="apellidos_usuario">Apellidos: </label>
+                    <input type="text" name="apellidos_usuario" value="<%= data.apellidos_usuario %>"
+                        class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="correo_usuario">Correo: </label>
+                    <input type="text" name="correo_usuario" value="<%= data.correo_usuario %>" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="pais_usuario">País: </label>
+                    <input type="text" name="pais_usuario" value="<%= data.pais_usuario %>" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="estado_usuario">Estado: </label>
+                    <input type="text" name="estado_usuario" value="<%= data.estado_usuario %>" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="ciudad_usuario">Ciudad: </label>
+                    <input type="text" name="ciudad_usuario" value="<%= data.ciudad_usuario %>" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="tipo_usuario">Tipo (1 o 2): </label>
+                    <input type="text" name="tipo_usuario" value="<%= data.tipo_usuario %>"
+                        class="form-control">
+                </div>
+                <button type="submit" class="save"> GUARDAR</button>
+                <a href="/adm_usuarios" class="cancel"> CANCELAR</a>
+            </form>
+        </div>
+    </div>
